@@ -1,4 +1,9 @@
-require('dotenv').config();
+import 'dotenv/config';
+import { readFileSync } from 'node:fs';
+
+const pkg = JSON.parse(
+  readFileSync(new URL('../../package.json', import.meta.url), 'utf-8')
+);
 
 const config = {
   env: process.env.NODE_ENV || 'development',
@@ -8,6 +13,7 @@ const config = {
     .map((o) => o.trim())
     .filter(Boolean),
   apiPrefix: '/api/v1',
+  version: pkg.version,
 };
 
-module.exports = config;
+export default config;

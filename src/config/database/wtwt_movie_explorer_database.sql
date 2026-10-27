@@ -1,5 +1,13 @@
+DROP DATABASE wtwt_movie_explorer_database;
 CREATE DATABASE IF NOT EXISTS wtwt_movie_explorer_database;
 USE wtwt_movie_explorer_database;
+
+CREATE TABLE IF NOT EXISTS roles (
+  id TINYINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(20) NOT NULL UNIQUE
+);
+
+INSERT IGNORE INTO roles (name) VALUES ('user'), ('admin');
 
 CREATE TABLE usuarios (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY,
@@ -7,9 +15,10 @@ CREATE TABLE usuarios (
     correo VARCHAR(100) UNIQUE NOT NULL,
     nombre_usuario VARCHAR(50) UNIQUE NOT NULL,
     contrasena VARCHAR(255) NOT NULL,
-    rol ENUM('user', 'admin') DEFAULT 'user',
+    role_id TINYINT UNSIGNED NOT NULL,
     estado ENUM('activo', 'inactivo') DEFAULT 'activo',
-    fecha_de_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    fecha_de_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (role_id) REFERENCES roles(id)
 );
 
 CREATE TABLE categorias (
@@ -18,19 +27,20 @@ CREATE TABLE categorias (
     descripcion TEXT
 );
 
-CREATE TABLE director_pelicula(
+CREATE TABLE director_peliculas(
     id_director INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(30) UNIQUE NOT NULL
 );
 CREATE TABLE plataformas(
-    id_plataforma INT PRIMARY KEY AUTO_INCREMENT
-    nombre VARCHAR() UNIQUE NOT NULL
+    id_plataforma INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(30) UNIQUE NOT NULL
 );
 
 CREATE TABLE idiomas(
     id_idioma INT PRIMARY KEY AUTO_INCREMENT,
     plataforma VARCHAR(30) UNIQUE NOT NULL
-)
+);
+
 CREATE TABLE peliculas (
     id_pelicula INT AUTO_INCREMENT PRIMARY KEY,
     titulo VARCHAR(150) UNIQUE NOT NULL,
@@ -39,13 +49,13 @@ CREATE TABLE peliculas (
     anio INT,
     duracion VARCHAR(50),
     id_director INT,
-    id_plataforma INT
+    id_plataforma INT,
     id_idioma INT,
     edad_recomendada VARCHAR(20),
     imagen_url VARCHAR(255),
-    FOREIGN KEY (id_categoria) REFERENCES categorias(id_categoria) ON DELETE SET NULL
-    FOREIGN KEY (id_director) REFERENCES director_peliculas(id_director) ON DELETE SET NULL
-    FOREIGN KEY (id_plataforma) REFERENCES plataformas(id_plataforma) ON DELETE SET NULL
+    FOREIGN KEY (id_categoria) REFERENCES categorias(id_categoria) ON DELETE SET NULL,
+    FOREIGN KEY (id_director) REFERENCES director_peliculas(id_director) ON DELETE SET NULL,
+    FOREIGN KEY (id_plataforma) REFERENCES plataformas(id_plataforma) ON DELETE SET NULL,
     FOREIGN KEY (id_idioma) REFERENCES idiomas(id_idioma) ON DELETE SET NULL
 );
 
@@ -77,6 +87,5 @@ CREATE TABLE resena_votos (
 
 ALTER TABLE peliculas ADD FULLTEXT idx_fulltext_pelicula (titulo, descripcion);
 CREATE INDEX idx_pelicula_categoria ON peliculas(id_categoria);
-CREATE INDEX idx_pelicula_ponderacion ON peliculas(ponderacion_promedio DESC);
 CREATE INDEX idx_resena_pelicula ON resenas(id_pelicula);
 CREATE INDEX idx_resena_fecha ON resenas(fecha_creacion DESC);

@@ -4,16 +4,15 @@ USE wtwt_movie_explorer_database;
 
 CREATE TABLE IF NOT EXISTS roles (
   id TINYINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-  name VARCHAR(20) NOT NULL UNIQUE
+  nombre VARCHAR(20) NOT NULL UNIQUE
 );
 
-INSERT IGNORE INTO roles (name) VALUES ('user'), ('admin');
+INSERT IGNORE INTO roles (name) VALUES ('usuario'), ('admin');
 
 CREATE TABLE usuarios (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     correo VARCHAR(100) UNIQUE NOT NULL,
-    nombre_usuario VARCHAR(50) UNIQUE NOT NULL,
     contrasena VARCHAR(255) NOT NULL,
     role_id TINYINT UNSIGNED NOT NULL,
     estado ENUM('activo', 'inactivo') DEFAULT 'activo',

@@ -14,6 +14,16 @@ const config = {
     .filter(Boolean),
   apiPrefix: '/api/v1',
   version: pkg.version,
+
+  jwt: {
+    secret: process.env.JWT_SECRET,
+    expiresIn: process.env.JWT_EXPIRES_IN || '1h',
+  },
+  bcryptRounds: parseInt(process.env.BCRYPT_SALT_ROUNDS, 10) || 10,
 };
+
+if (!config.jwt.secret) {
+  throw new Error('JWT_SECRET no está definido en las variables de entorno');
+}
 
 export default config;

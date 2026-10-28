@@ -1,14 +1,9 @@
 import { body } from "express-validator";
 
 export const registerRules = [
-    body("username")
+    body('username')
         .trim()
-        .isLength({ min: 3, max: 30 })
-        .withMessage("El nombre de usuario debe tener entre 3 y 30 caracteres")
-        .matches(/^\w+$/)
-        .withMessage(
-            "El nombre de usuario solo admite letras, números y guion bajo",
-        ),
+    .   isLength({ min: 2, max: 100 }).withMessage('El nombre debe tener entre 2 y 100 caracteres'),,
     body("email")
         .trim()
         .toLowerCase()

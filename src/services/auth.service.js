@@ -22,7 +22,7 @@ export async function register({ username, email, password }) {
         throw err;
     }
 
-    const user = { id, username, email, role: "user" };
+    const user = { id, username, email, role: User.DEFAULT_ROLE };
     return { user, token: signToken(user) };
 }
 

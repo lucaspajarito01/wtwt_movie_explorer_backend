@@ -1,4 +1,4 @@
-import { validationResult } from "express-validator";
+import { validationResult } from 'express-validator';
 import AppError from "../utils/AppError.js";
 
 export default function validate(req, res, next) {

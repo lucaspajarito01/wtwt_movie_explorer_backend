@@ -1,13 +1,14 @@
-DROP DATABASE wtwt_movie_explorer_database;
+-- DROP DATABASE IF EXISTS wtwt_movie_explorer_database;
+
 CREATE DATABASE IF NOT EXISTS wtwt_movie_explorer_database;
 USE wtwt_movie_explorer_database;
 
 CREATE TABLE IF NOT EXISTS roles (
-  id TINYINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-  nombre VARCHAR(20) NOT NULL UNIQUE
+    id TINYINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(20) NOT NULL UNIQUE
 );
 
-INSERT IGNORE INTO roles (name) VALUES ('usuario'), ('admin');
+INSERT IGNORE INTO roles (nombre) VALUES ('usuario'), ('admin');
 
 CREATE TABLE usuarios (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY,
@@ -37,7 +38,7 @@ CREATE TABLE plataformas(
 
 CREATE TABLE idiomas(
     id_idioma INT PRIMARY KEY AUTO_INCREMENT,
-    plataforma VARCHAR(30) UNIQUE NOT NULL
+    nombre VARCHAR(30) UNIQUE NOT NULL
 );
 
 CREATE TABLE peliculas (
@@ -52,6 +53,9 @@ CREATE TABLE peliculas (
     id_idioma INT,
     edad_recomendada VARCHAR(20),
     imagen_url VARCHAR(255),
+    estado ENUM('pendiente','aprobado') NOT NULL DEFAULT 'pendiente',
+	id_usuario_creador INT NULL,
+	FOREIGN KEY (id_usuario_creador) REFERENCES usuarios(id_usuario) ON DELETE SET NULL,
     FOREIGN KEY (id_categoria) REFERENCES categorias(id_categoria) ON DELETE SET NULL,
     FOREIGN KEY (id_director) REFERENCES director_peliculas(id_director) ON DELETE SET NULL,
     FOREIGN KEY (id_plataforma) REFERENCES plataformas(id_plataforma) ON DELETE SET NULL,
@@ -79,7 +83,7 @@ CREATE TABLE resena_votos (
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario) ON DELETE CASCADE,
     UNIQUE (id_resena, id_usuario) -- Evita que un usuario vote dos veces la misma reseña
 );
- 
+
 -- ==========================================
 -- ÍNDICES DE BÚSQUEDA Y RENDIMIENTO
 -- ==========================================
@@ -88,3 +92,4 @@ ALTER TABLE peliculas ADD FULLTEXT idx_fulltext_pelicula (titulo, descripcion);
 CREATE INDEX idx_pelicula_categoria ON peliculas(id_categoria);
 CREATE INDEX idx_resena_pelicula ON resenas(id_pelicula);
 CREATE INDEX idx_resena_fecha ON resenas(fecha_creacion DESC);
+

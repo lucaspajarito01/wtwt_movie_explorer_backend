@@ -1,32 +1,41 @@
-import pool from '../config/db.js';
+import pool from "../config/db.js";
+
+export const DEFAULT_ROLE = "usuario";
 
 export async function findByEmail(email) {
   const [rows] = await pool.execute(
-    `SELECT u.id, u.username, u.email, u.password_hash, r.name AS role
-       FROM users u
-       JOIN roles r ON r.id = u.role_id
-      WHERE u.email = ?`,
-    [email]
+    `SELECT u.id_usuario AS id, u.nombre AS username, u.correo AS email,
+            u.contrasena AS password_hash, u.estado, r.nombre AS role
+        FROM usuarios u
+        JOIN roles r ON r.id = u.role_id
+      WHERE u.correo = ?`,
+    [email],
   );
   return rows[0] || null;
 }
 
 export async function findById(id) {
   const [rows] = await pool.execute(
-    `SELECT u.id, u.username, u.email, r.name AS role
-       FROM users u
-       JOIN roles r ON r.id = u.role_id
-      WHERE u.id = ?`,
-    [id]
+    `SELECT u.id_usuario AS id, u.nombre AS username, u.correo AS email,
+            u.estado, r.nombre AS role
+      FROM usuarios u
+      JOIN roles r ON r.id = u.role_id
+      WHERE u.id_usuario = ?`,
+    [id],
   );
   return rows[0] || null;
 }
 
-export async function create({ username, email, passwordHash, roleName = 'user' }) {
+export async function create({
+  username,
+  email,
+  passwordHash,
+  roleName = DEFAULT_ROLE,
+}) {
   const [result] = await pool.execute(
-    `INSERT INTO users (username, email, password_hash, role_id)
-     SELECT ?, ?, ?, id FROM roles WHERE name = ?`,
-    [username, email, passwordHash, roleName]
+    `INSERT INTO usuarios (nombre, correo, contrasena, role_id)
+      SELECT ?, ?, ?, id FROM roles WHERE nombre = ?`,
+    [username, email, passwordHash, roleName],
   );
   if (!result.affectedRows) {
     throw new Error(`El rol "${roleName}" no existe en la tabla roles`);

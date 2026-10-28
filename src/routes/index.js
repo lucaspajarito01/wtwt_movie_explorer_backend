@@ -1,11 +1,13 @@
 import { Router } from 'express';
 import healthRoutes from './v1/health.routes.js';
 import authRoutes from "./v1/auth.routes.js";
+import adminRoutes from "./v1/admin.routes.js";
 
 const router = Router();
 
+// Aquí irmos  montando las diferentes rutas: /auth, /categories, /titles, /reviews...
 router.use('/health', healthRoutes);
 router.use("/auth", authRoutes);
-// Aquí irmos  montando las diferentes rutas: /auth, /categories, /titles, /reviews...
+router.use("/admin", adminRoutes);
 
 export default router;

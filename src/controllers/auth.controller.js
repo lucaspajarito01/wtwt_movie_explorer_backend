@@ -18,3 +18,7 @@ export async function login(req, res) {
         data
     });
 }
+
+export async function me(req, res) {
+    res.json({ success: true, data: { user: req.user } });
+}

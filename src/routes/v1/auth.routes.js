@@ -6,10 +6,12 @@ import { registerRules, loginRules } from "../../validators/auth.validators.js";
 import { authenticate } from "../../middlewares/auth.js";
 import { me } from "../../controllers/auth.controller.js";
 
+import { authLimiter } from '../../middlewares/rateLimiter.js';
+
 const router = Router();
 
-router.post("/register", registerRules, validate, register);
-router.post("/login", loginRules, validate, login);
+router.post('/register', authLimiter, registerRules, validate, register);
+router.post('/login', authLimiter, loginRules, validate, login);
 
 router.get("/me", authenticate, me);
 

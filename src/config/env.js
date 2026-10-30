@@ -13,6 +13,12 @@ if (pkg.engines?.node && !semver.satisfies(process.version, pkg.engines.node)) {
   throw new Error(`Se requiere Node ${pkg.engines.node}; versión actual: ${process.version}`);
 }
 
+const required = (name) => {
+  const value = process.env[name];
+  if (!value) throw new Error(`Falta la variable de entorno ${name}`);
+  return value;
+};
+
 const config = {
   env: process.env.NODE_ENV || 'development',
   port: parseInt(process.env.PORT, 10) || 3000,
@@ -23,8 +29,16 @@ const config = {
   apiPrefix: '/api/v1',
   version: pkg.version,
 
+  db: {
+    host: process.env.DB_HOST || 'localhost',
+    port: parseInt(process.env.DB_PORT, 10) || 3306,
+    user: required('DB_USER'),
+    password: process.env.DB_PASS ?? '',
+    database: required('DB_NAME'),
+  },
+
   jwt: {
-    secret: process.env.JWT_SECRET,
+    secret: required('JWT_SECRET'),
     expiresIn: process.env.JWT_EXPIRES_IN || '1h',
   },
   bcryptRounds: parseInt(process.env.BCRYPT_SALT_ROUNDS, 10) || 10,

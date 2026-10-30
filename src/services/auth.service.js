@@ -14,10 +14,8 @@ export async function register({ username, email, password }) {
     try {
         id = await User.create({ username, email, passwordHash });
     } catch (err) {
-        if (err.code === "ER_DUP_ENTRY") {
-            const key = err.sqlMessage?.match(/for key '(.+?)'/)?.[1] ?? "";
-            const campo = key.includes("username") ? "nombre de usuario" : "correo";
-            throw new AppError(`El ${campo} ya está registrado`, 409);
+        if (err.code === 'ER_DUP_ENTRY') {
+            throw new AppError('El correo ya está registrado', 409);
         }
         throw err;
     }
@@ -34,7 +32,10 @@ export async function login({ email, password }) {
     );
 
     if (!encontrado || !ok) {
-        throw new AppError("Credenciales inválidas", 401);  // Sin especificar cual falló
+        throw new AppError('Credenciales inválidas', 401);
+    }
+    if (encontrado.estado !== 'activo') {
+        throw new AppError('La cuenta está inactiva', 403);
     }
 
     const user = {

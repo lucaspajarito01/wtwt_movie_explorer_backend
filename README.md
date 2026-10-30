@@ -1,15 +1,17 @@
 # wtwt_movie_explorer_backend
 Una aplicación full-stack usando Node.js + Express para el backend que permita a los usuarios registrar, calificar y rankear películas, animes y series geek. 
 
-## Reseñas
+## Categorías
 
-Todas las rutas de reseñas requieren autenticación. Cada usuario solo puede editar o eliminar sus propias reseñas.
+Todas las rutas de categorías requieren un token Bearer de un usuario con rol `admin`:
 
 | Método | Ruta | Acción |
 | --- | --- | --- |
-| POST | `/api/v1/reviews` | Crear (`movieId`, `rating` y opcionalmente `title`, `comment`) |
-| PUT | `/api/v1/reviews/:id` | Reemplazar la calificación y opcionalmente el título y el comentario |
-| PATCH | `/api/v1/reviews/:id` | Actualizar la calificación, el título o el comentario |
-| DELETE | `/api/v1/reviews/:id` | Eliminar |
+| GET | `/api/v1/categories` | Listar categorías |
+| GET | `/api/v1/categories/:id` | Consultar una categoría |
+| POST | `/api/v1/categories` | Crear (`name`, opcionalmente `description`) |
+| PUT | `/api/v1/categories/:id` | Reemplazar el nombre y opcionalmente la descripción |
+| PATCH | `/api/v1/categories/:id` | Actualizar el nombre o la descripción |
+| DELETE | `/api/v1/categories/:id` | Eliminar |
 
-La calificación debe ser un entero de 1 a 10. Se responde `400` ante datos inválidos, `401` si falta o no es válido el token, `403` si se intenta modificar una reseña ajena y `404` si no existe la reseña o la película indicada.
+El nombre es obligatorio, único y admite hasta 50 caracteres. Las rutas responden `401` si falta o no es válido el token, `403` si el usuario no es administrador, `404` si la categoría no existe y `409` si el nombre ya está en uso.

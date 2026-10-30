@@ -13,6 +13,12 @@ if (pkg.engines?.node && !semver.satisfies(process.version, pkg.engines.node)) {
   throw new Error(`Se requiere Node ${pkg.engines.node}; versión actual: ${process.version}`);
 }
 
+const required = (name) => {
+  const value = process.env[name];
+  if (!value) throw new Error(`Falta la variable de entorno ${name}`);
+  return value;
+};
+
 const config = {
   env: process.env.NODE_ENV || 'development',
   port: parseInt(process.env.PORT, 10) || 3000,
@@ -23,23 +29,29 @@ const config = {
   apiPrefix: '/api/v1',
   version: pkg.version,
 
+  db: {
+    host: process.env.DB_HOST || 'localhost',
+    port: parseInt(process.env.DB_PORT, 10) || 3306,
+    user: required('DB_USER'),
+    password: process.env.DB_PASS ?? '',
+    database: required('DB_NAME'),
+  },
+
   jwt: {
-    secret: process.env.JWT_SECRET,
+    secret: required('JWT_SECRET'),
     expiresIn: process.env.JWT_EXPIRES_IN || '1h',
   },
   bcryptRounds: parseInt(process.env.BCRYPT_SALT_ROUNDS, 10) || 10,
+
+  rateLimit: {
+    windowMs: Number(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000,
+    max: Number(process.env.RATE_LIMIT_MAX) || 100,
+    authMax: Number(process.env.AUTH_RATE_LIMIT_MAX) || 20,
+  },
 };
 
-if (!config.jwt.secret) {
-  throw new Error('JWT_SECRET no está definido en las variables de entorno');
-
-rateLimit: {
-  windowMs: Number(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000,
-  max: Number(process.env.RATE_LIMIT_MAX) || 100,
-  authMax: Number(process.env.AUTH_RATE_LIMIT_MAX) || 20,
-}
-
+if (config.env === 'production' && config.jwt.secret.length < 32) {
+  throw new Error('JWT_SECRET debe tener al menos 32 caracteres en producción');
 }
 
 export default config;
-

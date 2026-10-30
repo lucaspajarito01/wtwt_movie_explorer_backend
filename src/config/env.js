@@ -28,18 +28,15 @@ const config = {
     expiresIn: process.env.JWT_EXPIRES_IN || '1h',
   },
   bcryptRounds: parseInt(process.env.BCRYPT_SALT_ROUNDS, 10) || 10,
+  rateLimit: {
+    windowMs: Number(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000,
+    max: Number(process.env.RATE_LIMIT_MAX) || 100,
+    authMax: Number(process.env.AUTH_RATE_LIMIT_MAX) || 20,
+  },
 };
 
 if (!config.jwt.secret) {
   throw new Error('JWT_SECRET no está definido en las variables de entorno');
-
-rateLimit: {
-  windowMs: Number(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000,
-  max: Number(process.env.RATE_LIMIT_MAX) || 100,
-  authMax: Number(process.env.AUTH_RATE_LIMIT_MAX) || 20,
-}
-
 }
 
 export default config;
-

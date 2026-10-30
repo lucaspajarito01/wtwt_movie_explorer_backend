@@ -32,3 +32,9 @@ export const authorize =
             }
             next();
         };
+
+
+export function optionalAuthenticate(req, res, next) {
+    if (!req.headers.authorization) return next();
+    return authenticate(req, res, next);
+}

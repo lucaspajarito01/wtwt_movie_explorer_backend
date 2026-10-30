@@ -42,7 +42,6 @@ const config = {
     expiresIn: process.env.JWT_EXPIRES_IN || '1h',
   },
   bcryptRounds: parseInt(process.env.BCRYPT_SALT_ROUNDS, 10) || 10,
-
   rateLimit: {
     windowMs: Number(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000,
     max: Number(process.env.RATE_LIMIT_MAX) || 100,
@@ -50,8 +49,8 @@ const config = {
   },
 };
 
-if (config.env === 'production' && config.jwt.secret.length < 32) {
-  throw new Error('JWT_SECRET debe tener al menos 32 caracteres en producción');
+if (!config.jwt.secret) {
+  throw new Error('JWT_SECRET no está definido en las variables de entorno');
 }
 
 export default config;

@@ -7,6 +7,8 @@ import errorHandler from './middlewares/errorHandler.js';
 import passport from "./config/passport.js";
 import apiVersion from './middlewares/apiVersion.js';
 import { apiLimiter } from './middlewares/rateLimiter.js';
+import swaggerUi from "swagger-ui-express";
+import openapi from "./docs/openapi.js";
 
 const app = express();
 
@@ -18,6 +20,21 @@ app.use(
   })
 );
 app.use(apiVersion);
+
+// Así no cuenta para el límite de peticiones de la API.
+app.use(
+  "/api/docs",
+  swaggerUi.serve,
+  swaggerUi.setup(openapi, {
+    customSiteTitle: "WTWT Movie Explorer – API",
+    swaggerOptions: {
+      persistAuthorization: true, // el token sobrevive a recargar la página
+      displayRequestDuration: true,
+    },
+  }),
+);
+app.get("/api/docs.json", (req, res) => res.json(openapi)); // importable en Postman/Insomnia
+
 app.use(config.apiPrefix, apiLimiter);   // límite global solo sobre /api/v1
 app.use(express.json());
 app.use(passport.initialize());

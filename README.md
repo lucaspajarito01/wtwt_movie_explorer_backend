@@ -77,3 +77,29 @@ Para votar, envía `type` con el valor `like` o `dislike`:
 ```
 
 La respuesta incluye `reviewId`, los totales `likes` y `dislikes`, y `userVote` (`"like"`, `"dislike"` o `null`). Votar la propia reseña responde `403`; si la reseña no existe, responde `404`.
+
+
+## Listado, filtros y ranking
+
+`GET /api/v1/titles?page=1&limit=10&categoryId=2&sort=ranking`
+
+| Parámetro | Valores | Por defecto |
+| --- | --- | --- |
+| `categoryId` | id de categoría | todas |
+| `sort` | `recent`, `ranking`, `rating`, `reviews`, `title`, `year` | `recent` |
+
+Cada título incluye `reviewCount`, `avgRating` (promedio simple) y `score` (ranking; `null` si no tiene reseñas).
+Los títulos sin reseñas quedan al final del ranking. Los empates se resuelven por número de reseñas y luego por id.
+
+### Fórmula del ranking
+
+    score = (C · m + Σ wᵢ · rᵢ) / (C + Σ wᵢ)
+
+- `rᵢ`: calificación (1–10) de cada reseña.
+- `wᵢ = factor_votos × decaimiento`.
+- `factor_votos = clamp(1 + 0.25 · (likes − dislikes), 0.5, 3)`.
+- `decaimiento = 0.5 ^ (días desde la reseña / 180)`.
+- `C = 3` (peso del promedio global) y `m` = promedio de todas las reseñas (5.5 si no hay ninguna).
+
+Es determinista: con los mismos datos y el mismo día, el orden es siempre el mismo.
+Los parámetros están en `src/config/ranking.js`.

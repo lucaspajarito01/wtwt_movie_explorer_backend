@@ -43,10 +43,10 @@ CREATE TABLE idiomas(
 
 CREATE TABLE peliculas (
     id_pelicula INT AUTO_INCREMENT PRIMARY KEY,
-    titulo VARCHAR(150) UNIQUE NOT NULL,
+    titulo VARCHAR(150) NOT NULL,
     descripcion TEXT,
     id_categoria INT,
-    anio INT,
+    anio INT NOT NULL,
     duracion VARCHAR(50),
     id_director INT,
     id_plataforma INT,
@@ -57,6 +57,7 @@ CREATE TABLE peliculas (
     trailer_url VARCHAR(255),
     estado ENUM('pendiente','aprobado') NOT NULL DEFAULT 'pendiente',
 	id_usuario_creador INT NULL,
+    UNIQUE KEY uq_pelicula_titulo_anio (titulo, anio),
 	FOREIGN KEY (id_usuario_creador) REFERENCES usuarios(id_usuario) ON DELETE SET NULL,
     FOREIGN KEY (id_categoria) REFERENCES categorias(id_categoria) ON DELETE SET NULL,
     FOREIGN KEY (id_director) REFERENCES director_peliculas(id_director) ON DELETE SET NULL,

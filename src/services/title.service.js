@@ -7,7 +7,7 @@ const isAdmin = (user) => user?.role === ROLES.ADMIN;
 
 function mapDbError(err) {
   if (err.code === "ER_DUP_ENTRY") {
-    return new AppError("Ya existe un título con ese nombre", 409);
+    return new AppError("Ya existe un título con ese nombre y año.", 409);
   }
   if (err.code === "ER_NO_REFERENCED_ROW_2") {
     return new AppError("La categoría indicada no existe", 400);
@@ -97,4 +97,18 @@ export async function update(id, data, user) {
   } catch (err) {
     throw mapDbError(err);
   }
+}
+
+// Funciones para admin: aprobar o rechazar un titulo pendiente o retirar uno aprobado.
+export async function approve(id) {
+  // El UPDATE condicional evita aprobar dos veces aunque dos admins hagan clic a la vez
+  if (await Title.approve(id)) return Title.findById(id);
+
+  const existing = await Title.findById(id);
+  if (!existing) throw new AppError("Título no encontrado", 404);
+  throw new AppError("El título ya está aprobado", 409);
+}
+
+export async function remove(id) {
+  if (!(await Title.remove(id))) throw new AppError("Título no encontrado", 404);
 }

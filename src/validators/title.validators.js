@@ -1,5 +1,6 @@
 import { body, query } from "express-validator";
 import { paginationRules } from "./common.validators.js";
+import { TITLE_SORTS } from "../models/title.model.js";
 
 // Campos que el cliente puede enviar
 export const TITLE_FIELDS = [
@@ -110,9 +111,18 @@ export const updateTitleRules = [
 ];
 
 export const listTitleRules = [
-    ...paginationRules,
-    query("estado")
-        .optional()
-        .isIn(["aprobado", "pendiente", "todos"])
-        .withMessage("estado debe ser aprobado, pendiente o todos"),
+  ...paginationRules,
+  query("estado")
+    .optional()
+    .isIn(["aprobado", "pendiente", "todos"])
+    .withMessage("estado debe ser aprobado, pendiente o todos"),
+  query("categoryId")
+    .optional()
+    .isInt({ min: 1 })
+    .withMessage("categoryId debe ser un entero positivo")
+    .toInt(),
+  query("sort")
+    .optional()
+    .isIn(TITLE_SORTS)
+    .withMessage(`sort debe ser uno de: ${TITLE_SORTS.join(", ")}`),
 ];

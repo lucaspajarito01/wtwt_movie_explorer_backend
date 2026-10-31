@@ -5,6 +5,7 @@ import adminRoutes from "./v1/admin.routes.js";
 import categoriesRoutes from "./v1/categories.routes.js";
 import titlesRoutes from "./v1/titles.routes.js";
 import reviewsRoutes from "./v1/reviews.routes.js";
+import votesRoutes from "./v1/votes.routes.js";
 
 const router = Router();
 
@@ -14,6 +15,7 @@ router.use("/auth", authRoutes);
 router.use("/admin", adminRoutes);
 router.use("/categories", categoriesRoutes);
 router.use("/titles", titlesRoutes);
+router.use("/reviews/:id/vote", votesRoutes);
 router.use("/reviews", reviewsRoutes);
 
 export default router;

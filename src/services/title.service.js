@@ -31,10 +31,12 @@ async function resolveRefs(conn, data) {
 }
 
 // Público: solo aprobados. Admin: puede filtrar por estado.
-export async function list({ page, limit, estado }, user) {
+export async function list({ page, limit, estado, categoryId, sort }, user) {
   const status = isAdmin(user) ? estado : "aprobado";
   const { items, total } = await Title.findAll({
     status,
+    categoryId,
+    sort,
     limit,
     offset: (page - 1) * limit,
   });

@@ -12,10 +12,17 @@ const pickFields = (body) =>
   );
 
 export async function list(req, res) {
-  const { page = 1, limit = 10, estado = "aprobado" } = matchedData(req, {
-    locations: ["query"],
-  });
-  const { items, meta } = await titleService.list({ page, limit, estado }, req.user);
+  const {
+    page = 1,
+    limit = 10,
+    estado = "aprobado",
+    categoryId,
+    sort = "recent",
+  } = matchedData(req, { locations: ["query"] });
+  const { items, meta } = await titleService.list(
+    { page, limit, estado, categoryId, sort },
+    req.user,
+  );
   res.json({ success: true, data: items, meta });
 }
 

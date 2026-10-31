@@ -40,3 +40,13 @@ export async function update(req, res) {
   const title = await titleService.update(req.params.id, pickFields(req.body), req.user);
   res.json({ success: true, message: "Título actualizado correctamente", data: title });
 }
+
+export async function approve(req, res) {
+  const title = await titleService.approve(req.params.id);
+  res.json({ success: true, message: "Título aprobado correctamente", data: title });
+}
+
+export async function remove(req, res) {
+  await titleService.remove(req.params.id);
+  res.json({ success: true, message: "Título eliminado correctamente" });
+}

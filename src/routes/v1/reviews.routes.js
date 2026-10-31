@@ -1,17 +1,9 @@
 import { Router } from "express";
-import {
-  create,
-  remove,
-  update,
-} from "../../controllers/review.controller.js";
+import { create, remove, update, } from "../../controllers/review.controller.js";
 import { authenticate } from "../../middlewares/auth.js";
 import validate from "../../middlewares/validate.js";
 import { idParam } from "../../validators/common.validators.js";
-import {
-  createReviewRules,
-  replaceReviewRules,
-  updateReviewRules,
-} from "../../validators/review.validators.js";
+import { createReviewRules, replaceReviewRules, updateReviewRules, } from "../../validators/review.validators.js";
 
 const router = Router();
 

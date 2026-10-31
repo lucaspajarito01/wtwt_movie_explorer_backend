@@ -34,3 +34,46 @@ mayúsculas/minúsculas y tildes, y se colapsan los espacios repetidos. Un dupli
 Obligatorios al crear: `title`, `description`, `categoryId`, `year`.
 Opcionales: `duration`, `ageRating`, `director`, `platform`, `language`, `posterUrl`, `bannerUrl`, `trailerUrl` (`null` borra el valor al editar).
 Admin: `?estado=pendiente|aprobado|todos` en el listado.
+
+## Reseñas
+
+Todas las rutas de reseñas requieren autenticación con un token Bearer. Cada usuario puede crear reseñas para películas existentes y solo puede editar o eliminar sus propias reseñas.
+
+| Método | Ruta | Acción |
+| --- | --- | --- |
+| POST | `/api/v1/reviews` | Crear una reseña |
+| PUT | `/api/v1/reviews/:id` | Actualizar la reseña (requiere `rating`; `title` y `comment` son opcionales) |
+| PATCH | `/api/v1/reviews/:id` | Actualizar uno o más campos |
+| DELETE | `/api/v1/reviews/:id` | Eliminar una reseña propia |
+
+Para crear una reseña, envía `movieId` (entero positivo) y `rating` (entero del 1 al 10). `title` y `comment` son opcionales; el título admite hasta 100 caracteres.
+
+```json
+{
+  "movieId": 1,
+  "rating": 9,
+  "title": "Una gran película",
+  "comment": "Me gustó mucho."
+}
+```
+
+En una actualización `PATCH`, debes enviar al menos uno de estos campos: `rating`, `title` o `comment`. Las rutas de edición y eliminación responden `403` si la reseña pertenece a otro usuario y `404` si no existe; crear una reseña para una película inexistente también responde `404`.
+
+## Likes y dislikes de reseñas
+
+Los usuarios autenticados pueden votar una vez por reseña. No se puede votar la reseña propia. Enviar el voto opuesto cambia el anterior; repetir el mismo voto no lo duplica.
+
+| Método | Ruta | Acción |
+| --- | --- | --- |
+| PUT | `/api/v1/reviews/:id/vote` | Registrar un like o dislike |
+| DELETE | `/api/v1/reviews/:id/vote` | Retirar el voto propio |
+
+Para votar, envía `type` con el valor `like` o `dislike`:
+
+```json
+{
+  "type": "like"
+}
+```
+
+La respuesta incluye `reviewId`, los totales `likes` y `dislikes`, y `userVote` (`"like"`, `"dislike"` o `null`). Votar la propia reseña responde `403`; si la reseña no existe, responde `404`.

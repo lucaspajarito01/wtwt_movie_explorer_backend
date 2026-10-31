@@ -78,9 +78,9 @@ CREATE TABLE resenas (
 );
 
 CREATE TABLE resena_votos (
-    id_voto INT AUTO_INCREMENT PRIMARY KEY,
+    id_voto INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
     id_resena INT,
-    id_usuario INT,
+    id_usuario INT NOT NULL,
     tipo_voto ENUM('like', 'dislike') NOT NULL,
     FOREIGN KEY (id_resena) REFERENCES resenas(id_resena) ON DELETE CASCADE,
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario) ON DELETE CASCADE,

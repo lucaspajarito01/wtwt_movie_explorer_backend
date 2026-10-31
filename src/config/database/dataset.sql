@@ -1,0 +1,92 @@
+USE wtwt_movie_explorer_database;
+
+INSERT INTO categorias (nombre, descripcion) VALUES
+    ('Acción', 'Películas con alta dosis de adrenalina, persecuciones y secuencias de combate.'),
+    ('Comedia', 'Películas diseñadas para entretener y hacer reír a la audiencia a través del humor.'),
+    ('Drama', 'Historias centradas en el desarrollo de personajes y conflictos emocionales profundos.'),
+    ('Ciencia Ficción', 'Narrativas basadas en avances científicos futuros, tecnología avanzada o viajes espaciales.'),
+    ('Terror', 'Películas orientadas a provocar miedo, tensión, sobresaltos y suspense en el espectador.'),
+    ('Aventura', 'Historias de exploración, viajes épicos y búsqueda de objetivos o tesoros lejanos.'),
+    ('Animación', 'Obras realizadas mediante técnicas de dibujo, animación 3D o stop-motion, aptas para todo público.'),
+    ('Romance', 'Tramas enfocadas en las relaciones amorosas, la pasión y los vínculos afectivos.'),
+    ('Suspenso', 'Historias llenas de misterio y tensión psicológica que mantienen la intriga hasta el final.'),
+    ('Fantasía', 'Mundos imaginarios con elementos mágicos, criaturas mitológicas y eventos sobrenaturales.'),
+    ('Documental', 'Producciones de no ficción enfocadas en investigar, informar y presentar hechos reales.'),
+    ('Crimen', 'Narrativas sobre actividades delictivas, investigaciones policiales, juicios y mafias.'),
+    ('Musical', 'Películas donde la música, las canciones y las coreografías impulsan y forman parte central de la trama.'),
+    ('Western', 'Historias ambientadas en el Lejano Oeste estadounidense con vaqueros, forajidos y duelos.'),
+    ('Histórica', 'Recreaciones cinematográficas de eventos, épocas y personajes reales del pasado.');
+
+
+INSERT INTO director_peliculas (nombre) VALUES
+    ('Christopher Nolan'),
+    ('Quentin Tarantino'),
+    ('Steven Spielberg'),
+    ('Martin Scorsese'),
+    ('Denis Villeneuve'),
+    ('Greta Gerwig'),
+    ('David Fincher'),
+    ('Bong Joon-ho'),
+    ('Hayao Miyazaki'),
+    ('Guillermo del Toro'),
+    ('Ridley Scott'),
+    ('Pedro Almodóvar'),
+    ('Alejandro González Iñárritu'),
+    ('Wes Anderson'),
+    ('James Cameron');
+
+INSERT INTO plataformas (nombre) VALUES
+    ('Netflix'),
+    ('Amazon Prime Video'),
+    ('Disney+'),
+    ('HBO Max'),
+    ('Apple TV+'),
+    ('Paramount+'),
+    ('Crunchyroll'),
+    ('Cine (Salas de Cine)'),
+    ('Star+'),
+    ('Google Play Películas');
+
+INSERT INTO idiomas (nombre) VALUES
+    ('Español'),
+    ('Inglés'),
+    ('Francés'),
+    ('Alemán'),
+    ('Japonés'),
+    ('Coreano'),
+    ('Italiano'),
+    ('Portugués'),
+    ('Mandarín'),
+    ('Ruso');
+
+INSERT INTO peliculas (titulo, descripcion, id_categoria, anio, duracion, id_director, id_plataforma, id_idioma, edad_recomendada, poster_url, banner_url, trailer_url, estado, id_usuario_creador) VALUES
+    ('El Origen del Futuro', 'Un hacker descubre una conspiración cibernética que amenaza con apagar la red global.', 4, 2023, '148 min', 1, 1, 2, '+13', 'https://example.com/posters/origen.jpg', 'https://example.com/banners/origen.jpg', 'https://youtube.com/watch?v=ejemplo1', 'aprobado', NULL),
+    ('Bajo la Sombra de la Noche', 'Un detective retirado debe resolver un caso personal antes de que amanezca.', 9, 2022, '115 min', 7, 4, 2, '+16', 'https://example.com/posters/sombra.jpg', 'https://example.com/banners/sombra.jpg', 'https://youtube.com/watch?v=ejemplo2', 'aprobado', NULL),
+    ('Risas en Altamar', 'Un crucero de vacaciones se convierte en un caos cómico cuando la tripulación confunde a los pasajeros.', 2, 2024, '95 min', 6, 3, 1, 'Todo Público', 'https://example.com/posters/risas.jpg', 'https://example.com/banners/risas.jpg', 'https://youtube.com/watch?v=ejemplo3', 'aprobado', NULL),
+    ('El Susurro del Viento', 'Un drama emotivo sobre la reconciliación de una familia en la campiña francesa.', 3, 2021, '120 min', 12, 5, 3, '+12', 'https://example.com/posters/susurro.jpg', 'https://example.com/banners/susurro.jpg', 'https://youtube.com/watch?v=ejemplo4', 'pendiente', NULL),
+    ('Laberinto de Sombras', 'Una criatura mítica acecha a un grupo de exploradores en lo profundo de un bosque ancestral.', 5, 2023, '102 min', 10, 6, 2, '+18', 'https://example.com/posters/laberinto.jpg', 'https://example.com/banners/laberinto.jpg', 'https://youtube.com/watch?v=ejemplo5', 'aprobado', NULL),
+    ('Fiebre de Velocidad', 'Pilotos clandestinos compiten en una carrera de resistencia a través de varios países.', 1, 2022, '130 min', 2, 2, 2, '+16', 'https://example.com/posters/velocidad.jpg', 'https://example.com/banners/velocidad.jpg', 'https://youtube.com/watch?v=ejemplo6', 'aprobado', NULL),
+    ('El Jardín de las Estrellas', 'Un viaje fantástico a través de galaxias lejanas en busca de la fuente de la vida.', 10, 2024, '110 min', 9, 3, 5, 'Todo Público', 'https://example.com/posters/jardin.jpg', 'https://example.com/banners/jardin.jpg', 'https://youtube.com/watch?v=ejemplo7', 'aprobado', NULL),
+    ('Memorias de Acero', 'Crónica histórica sobre la revolución industrial y el impacto social en las familias obreras.', 15, 2020, '140 min', 4, 9, 2, '+12', 'https://example.com/posters/acero.jpg', 'https://example.com/banners/acero.jpg', 'https://youtube.com/watch?v=ejemplo8', 'pendiente', NULL),
+    ('Operación Alfa', 'Agentes encubiertos deben desmantelar una red internacional de contrabando.', 12, 2023, '118 min', 11, 1, 2, '+16', 'https://example.com/posters/alfa.jpg', 'https://example.com/banners/alfa.jpg', 'https://youtube.com/watch?v=ejemplo9', 'aprobado', NULL),
+    ('Melodía de Invierno', 'Una joven pianista encuentra el amor mientras ensaya para el concierto de fin de año.', 13, 2022, '105 min', 6, 5, 4, 'Todo Público', 'https://example.com/posters/melodia.jpg', 'https://example.com/banners/melodia.jpg', 'https://youtube.com/watch?v=ejemplo10', 'aprobado', NULL),
+    ('El Último Duelo', 'Dos vaqueros se enfrentan por el control de un pueblo fronterizo sin ley.', 14, 2021, '112 min', 2, 6, 2, '+16', 'https://example.com/posters/duelo.jpg', 'https://example.com/banners/duelo.jpg', 'https://youtube.com/watch?v=ejemplo11', 'aprobado', NULL),
+    ('Planetas Lejanos', 'La humanidad coloniza un nuevo exoplaneta, enfrentándose a desafíos ecológicos extremos.', 4, 2024, '155 min', 5, 4, 2, '+13', 'https://example.com/posters/planetas.jpg', 'https://example.com/banners/planetas.jpg', 'https://youtube.com/watch?v=ejemplo12', 'pendiente', NULL),
+    ('Guardianes del Océano', 'Documental que explora la biodiversidad marina y los esfuerzos de conservación en arrecifes.', 11, 2023, '90 min', 3, 3, 1, 'Todo Público', 'https://example.com/posters/oceanos.jpg', 'https://example.com/banners/oceanos.jpg', 'https://youtube.com/watch?v=ejemplo13', 'aprobado', NULL),
+    ('Aventura en la Selva', 'Un grupo de arqueólogos busca una ciudad perdida oculta en la selva amazónica.', 6, 2022, '125 min', 3, 8, 1, '+12', 'https://example.com/posters/selva.jpg', 'https://example.com/banners/selva.jpg', 'https://youtube.com/watch?v=ejemplo14', 'aprobado', NULL),
+    ('Magia en la Ciudad', 'Un hechizo accidental transforma la vida cotidiana de un modesto empleado de oficina.', 10, 2023, '98 min', 10, 1, 2, 'Todo Público', 'https://example.com/posters/magia.jpg', 'https://example.com/banners/magia.jpg', 'https://youtube.com/watch?v=ejemplo15', 'aprobado', NULL),
+    ('Corazones Rotos', 'Dos exparejas se reencuentran en una boda y deben lidiar con sentimientos no resueltos.', 8, 2021, '104 min', 12, 2, 3, '+13', 'https://example.com/posters/corazones.jpg', 'https://example.com/banners/corazones.jpg', 'https://youtube.com/watch?v=ejemplo16', 'aprobado', NULL),
+    ('El Imperio del Crimen', 'Ascenso y caída de un capo de la mafia en el Chicago de los años treinta.', 12, 2020, '150 min', 4, 4, 2, '+18', 'https://example.com/posters/imperio.jpg', 'https://example.com/banners/imperio.jpg', 'https://youtube.com/watch?v=ejemplo17', 'pendiente', NULL),
+    ('El Bosque Encantado', 'Una niña descubre un portal secreto hacia un reino gobernado por espíritus del bosque.', 7, 2024, '92 min', 9, 3, 5, 'Todo Público', 'https://example.com/posters/bosque.jpg', 'https://example.com/banners/bosque.jpg', 'https://youtube.com/watch?v=ejemplo18', 'aprobado', NULL),
+    ('Conexión Secreta', 'Un analista de inteligencia destapa una filtración masiva dentro de su propia agencia.', 9, 2023, '116 min', 7, 10, 2, '+16', 'https://example.com/posters/conexion.jpg', 'https://example.com/banners/conexion.jpg', 'https://youtube.com/watch?v=ejemplo19', 'aprobado', NULL),
+    ('Risas Compartidas', 'Tres amigos intentan abrir un negocio de comedia en vivo con resultados desastrosos.', 2, 2022, '99 min', 14, 2, 2, '+13', 'https://example.com/posters/comedia3.jpg', 'https://example.com/banners/comedia3.jpg', 'https://youtube.com/watch?v=ejemplo20', 'aprobado', NULL),
+    ('Abismo Profundo', 'Un equipo de submarinistas investiga una anomalía geológica en la fosa de las Marianas.', 5, 2023, '108 min', 15, 6, 2, '+16', 'https://example.com/posters/abismo.jpg', 'https://example.com/banners/abismo.jpg', 'https://youtube.com/watch?v=ejemplo21', 'pendiente', NULL),
+    ('El Legado de los Reyes', 'Drama histórico sobre las intrigas políticas en la corte real del siglo XV.', 15, 2021, '145 min', 11, 4, 2, '+16', 'https://example.com/posters/reyes.jpg', 'https://example.com/banners/reyes.jpg', 'https://youtube.com/watch?v=ejemplo22', 'aprobado', NULL),
+    ('Ritmo Urbano', 'Bailarines callejeros compiten por el campeonato nacional de hip-hop.', 13, 2024, '107 min', 6, 1, 1, '+12', 'https://example.com/posters/ritmo.jpg', 'https://example.com/banners/ritmo.jpg', 'https://youtube.com/watch?v=ejemplo23', 'aprobado', NULL),
+    ('Frontera sin Ley', 'Un sheriff solitario protege un pueblo fronterizo de una banda de forajidos.', 14, 2022, '114 min', 2, 5, 2, '+16', 'https://example.com/posters/frontera.jpg', 'https://example.com/banners/frontera.jpg', 'https://youtube.com/watch?v=ejemplo24', 'aprobado', NULL),
+    ('El Eco del Pasado', 'Una arquitecta descubre secretos familiares al restaurar una antigua mansión.', 3, 2023, '122 min', 13, 9, 1, '+13', 'https://example.com/posters/eco.jpg', 'https://example.com/banners/eco.jpg', 'https://youtube.com/watch?v=ejemplo25', 'aprobado', NULL),
+    ('Misión Cósmica', 'Astronautas deben reparar una estación espacial dañada antes de una tormenta solar.', 4, 2024, '132 min', 1, 3, 2, '+13', 'https://example.com/posters/mision.jpg', 'https://example.com/banners/mision.jpg', 'https://youtube.com/watch?v=ejemplo26', 'pendiente', NULL),
+    ('La Casa del Reloj', 'Un thriller psicológico sobre un misterioso anticuario y su colección maldita.', 9, 2021, '100 min', 7, 2, 2, '+16', 'https://example.com/posters/reloj.jpg', 'https://example.com/banners/reloj.jpg', 'https://youtube.com/watch?v=ejemplo27', 'aprobado', NULL),
+    ('Amor a Primer Vistazo', 'Una comedia romántica ambientada en las bulliciosas calles de Tokio.', 8, 2023, '103 min', 14, 1, 5, 'Todo Público', 'https://example.com/posters/tokyo.jpg', 'https://example.com/banners/tokyo.jpg', 'https://youtube.com/watch?v=ejemplo28', 'aprobado', NULL),
+    ('Cazadores de Leyendas', 'Aventureros recorren el mundo tras las reliquias más buscadas de la antigüedad.', 6, 2022, '135 min', 3, 8, 2, '+12', 'https://example.com/posters/leyendas.jpg', 'https://example.com/banners/leyendas.jpg', 'https://youtube.com/watch?v=ejemplo29', 'aprobado', NULL),
+    ('Voces de la Tierra', 'Documental íntimo sobre las comunidades indígenas y su relación con la naturaleza.', 11, 2023, '95 min', 8, 3, 6, 'Todo Público', 'https://example.com/posters/voces.jpg', 'https://example.com/banners/voces.jpg', 'https://youtube.com/watch?v=ejemplo30', 'aprobado', NULL);

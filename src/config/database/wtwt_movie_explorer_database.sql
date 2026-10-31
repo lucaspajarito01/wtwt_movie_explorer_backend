@@ -95,20 +95,3 @@ ALTER TABLE peliculas ADD FULLTEXT idx_fulltext_pelicula (titulo, descripcion);
 CREATE INDEX idx_pelicula_categoria ON peliculas(id_categoria);
 CREATE INDEX idx_resena_pelicula ON resenas(id_pelicula);
 CREATE INDEX idx_resena_fecha ON resenas(fecha_creacion DESC);
-
-INSERT INTO categorias (nombre, descripcion) VALUES
-    ('Acción', 'Películas con alta dosis de adrenalina, persecuciones y secuencias de combate.'),
-    ('Comedia', 'Películas diseñadas para entretener y hacer reír a la audiencia a través del humor.'),
-    ('Drama', 'Historias centradas en el desarrollo de personajes y conflictos emocionales profundos.'),
-    ('Ciencia Ficción', 'Narrativas basadas en avances científicos futuros, tecnología avanzada o viajes espaciales.'),
-    ('Terror', 'Películas orientadas a provocar miedo, tensión, sobresaltos y suspense en el espectador.'),
-    ('Aventura', 'Historias de exploración, viajes épicos y búsqueda de objetivos o tesoros lejanos.'),
-    ('Animación', 'Obras realizadas mediante técnicas de dibujo, animación 3D o stop-motion, aptas para todo público.'),
-    ('Romance', 'Tramas enfocadas en las relaciones amorosas, la pasión y los vínculos afectivos.'),
-    ('Suspenso', 'Historias llenas de misterio y tensión psicológica que mantienen la intriga hasta el final.'),
-    ('Fantasía', 'Mundos imaginarios con elementos mágicos, criaturas mitológicas y eventos sobrenaturales.'),
-    ('Documental', 'Producciones de no ficción enfocadas en investigar, informar y presentar hechos reales.'),
-    ('Crimen', 'Narrativas sobre actividades delictivas, investigaciones policiales, juicios y mafias.'),
-    ('Musical', 'Películas donde la música, las canciones y las coreografías impulsan y forman parte central de la trama.'),
-    ('Western', 'Historias ambientadas en el Lejano Oeste estadounidense con vaqueros, forajidos y duelos.'),
-    ('Histórica', 'Recreaciones cinematográficas de eventos, épocas y personajes reales del pasado.');

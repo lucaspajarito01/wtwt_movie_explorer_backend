@@ -112,3 +112,20 @@ export async function update(conn, id, fields) {
         [...values, id],
     );
 }
+
+
+export async function approve(id) {
+  const [result] = await pool.execute(
+    "UPDATE peliculas SET estado = 'aprobado' WHERE id_pelicula = ? AND estado = 'pendiente'",
+    [id],
+  );
+  return result.affectedRows > 0;
+}
+
+export async function remove(id) {
+  const [result] = await pool.execute(
+    "DELETE FROM peliculas WHERE id_pelicula = ?",
+    [id],
+  );
+  return result.affectedRows > 0;
+}

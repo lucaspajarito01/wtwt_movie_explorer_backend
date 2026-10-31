@@ -25,6 +25,11 @@ El nombre es obligatorio, único y admite hasta 50 caracteres. Las rutas respond
 | GET | `/api/v1/titles/:id` | Público | Detalle (los pendientes solo los ven su autor y los admins) |
 | POST | `/api/v1/titles` | Usuario autenticado | Proponer un título (queda `pendiente`; si es admin, `aprobado`) |
 | PATCH | `/api/v1/titles/:id` | Autor (solo si está pendiente) o admin | Editar campos |
+| PATCH | `/api/v1/titles/:id/approve` | Admin | Aprueba un título pendiente (409 si ya estaba aprobado) |
+| DELETE | `/api/v1/titles/:id` | Admin | Elimina/rechaza un título (borra también sus reseñas) |
+
+**Regla de duplicados:** no se permiten dos títulos con el mismo nombre y año. La comparación ignora
+mayúsculas/minúsculas y tildes, y se colapsan los espacios repetidos. Un duplicado responde `409`.
 
 Obligatorios al crear: `title`, `description`, `categoryId`, `year`.
 Opcionales: `duration`, `ageRating`, `director`, `platform`, `language`, `posterUrl`, `bannerUrl`, `trailerUrl` (`null` borra el valor al editar).

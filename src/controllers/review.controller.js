@@ -8,6 +8,11 @@ function reviewFields(req) {
   return fields;
 }
 
+export async function list(req, res) {
+  const reviews = await reviewService.list(req.query.movieId);
+  res.json({ success: true, data: reviews });
+}
+
 export async function create(req, res) {
   const review = await reviewService.create(
     reviewFields(req),

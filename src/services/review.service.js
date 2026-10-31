@@ -1,6 +1,13 @@
 import * as Review from "../models/review.model.js";
 import AppError from "../utils/AppError.js";
 
+export async function list(movieId) {
+  if (!(await Review.findMovieById(movieId))) {
+    throw new AppError("Película no encontrada", 404);
+  }
+  return Review.findByMovie(movieId);
+}
+
 export async function create(fields, userId) {
   if (!(await Review.findMovieById(fields.movieId))) {
     throw new AppError("Película no encontrada", 404);

@@ -26,6 +26,14 @@ export async function findById(id) {
   return rows[0] || null;
 }
 
+export async function findByMovie(movieId) {
+  const [rows] = await pool.execute(
+    "SELECT r.id_resena AS id, r.id_pelicula AS movieId, r.id_usuario AS userId, u.nombre AS username, r.titulo_resena AS title, r.comentario AS comment, r.calificacion AS rating, r.fecha_creacion AS createdAt FROM resenas r JOIN usuarios u ON u.id_usuario = r.id_usuario WHERE r.id_pelicula = ? ORDER BY r.fecha_creacion DESC",
+    [movieId],
+  );
+  return rows;
+}
+
 export async function create({ movieId, userId, title, comment, rating }) {
   const [result] = await pool.execute(
     `INSERT INTO resenas

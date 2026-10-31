@@ -1,4 +1,11 @@
-import { body } from "express-validator";
+import { body, query } from "express-validator";
+
+export const listReviewsRules = [
+  query("movieId")
+    .isInt({ min: 1 })
+    .withMessage("movieId debe ser un entero positivo")
+    .toInt(),
+];
 
 const ratingRule = () =>
   body("rating")

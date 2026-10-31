@@ -131,3 +131,57 @@ export async function findById(id) {
   const [rows] = await pool.execute(`${SELECT_TITLE} WHERE p.id_pelicula = ?`, [id]);
   return rows[0] ? toTitle(rows[0]) : null;
 }
+
+// Devuelve el id del registro (lo crea si no existe). Atómico gracias al UNIQUE de nombre.
+export async function findOrCreateRef(conn, table, idColumn, name) {
+  if (name === null) return null;
+  const [result] = await conn.execute(
+    `INSERT INTO ${table} (nombre) VALUES (?)
+     ON DUPLICATE KEY UPDATE ${idColumn} = LAST_INSERT_ID(${idColumn})`,
+    [name],
+  );
+  return result.insertId;
+}
+
+export async function insert(conn, f) {
+  const [result] = await conn.execute(
+    `INSERT INTO peliculas
+       (titulo, descripcion, id_categoria, anio, duracion, id_director,
+        id_plataforma, id_idioma, edad_recomendada, poster_url, banner_url,
+        trailer_url, estado, id_usuario_creador)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    [
+      f.title,
+      f.description,
+      f.categoryId,
+      f.year,
+      f.duration ?? null,
+      f.directorId ?? null,
+      f.platformId ?? null,
+      f.languageId ?? null,
+      f.ageRating ?? null,
+      f.posterUrl ?? null,
+      f.bannerUrl ?? null,
+      f.trailerUrl ?? null,
+      f.status,
+      f.createdBy,
+    ],
+  );
+  return result.insertId;
+}
+
+export async function update(conn, id, fields) {
+  const sets = [];
+  const values = [];
+  for (const [key, column] of Object.entries(COLUMN_MAP)) {
+    if (Object.hasOwn(fields, key)) {
+      sets.push(`${column} = ?`);
+      values.push(fields[key] ?? null);
+    }
+  }
+  if (sets.length === 0) return;
+  await conn.execute(
+    `UPDATE peliculas SET ${sets.join(", ")} WHERE id_pelicula = ?`,
+    [...values, id],
+  );
+}

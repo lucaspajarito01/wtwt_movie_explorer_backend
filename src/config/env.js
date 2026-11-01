@@ -35,6 +35,10 @@ const config = {
     user: required('DB_USER'),
     password: process.env.DB_PASS ?? '',
     database: required('DB_NAME'),
+    // Opcional: ruta al certificado CA del proveedor (p. ej. Aiven). Si no se define, la conexión no usa SSL.
+    ssl: process.env.DB_SSL_CA_PATH
+      ? { ca: readFileSync(process.env.DB_SSL_CA_PATH), rejectUnauthorized: true }
+      : undefined,
   },
 
   jwt: {

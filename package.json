@@ -4,7 +4,7 @@
   "description": "Una aplicación full-stack usando Node.js + Express para el backend que permita a los usuarios registrar, calificar y rankear películas, animes y series geek.",
   "main": "src/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --test \"tests/**/*.test.js\"",
     "start": "node src/server.js",
     "dev": "nodemon src/server.js --quiet",
     "docs:check": "node scripts/validate-docs.mjs"

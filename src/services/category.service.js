@@ -1,41 +1,47 @@
-import * as Category from "../models/category.model.js";
+import Category from "../entities/Category.js";
 import AppError from "../utils/AppError.js";
 
-export async function list() {
-  return Category.findAll();
-}
+const duplicate = () => new AppError("Ya existe una categoría con ese nombre", 409);
 
-export async function get(id) {
-  const category = await Category.findById(id);
-  if (!category) throw new AppError("Categoría no encontrada", 404);
-  return category;
-}
+export default class CategoryService {
+  #categories;
 
-export async function create(fields) {
-  try {
-    return await Category.create(fields);
-  } catch (err) {
-    if (err.code === "ER_DUP_ENTRY") {
-      throw new AppError("Ya existe una categoría con ese nombre", 409);
-    }
-    throw err;
+  constructor(categoryRepository) {
+    this.#categories = categoryRepository;
   }
-}
 
-export async function update(id, fields) {
-  try {
-    const category = await Category.update(id, fields);
+  list() {
+    return this.#categories.findAll();
+  }
+
+  async get(id) {
+    const category = await this.#categories.findById(id);
     if (!category) throw new AppError("Categoría no encontrada", 404);
     return category;
-  } catch (err) {
-    if (err.code === "ER_DUP_ENTRY") {
-      throw new AppError("Ya existe una categoría con ese nombre", 409);
-    }
-    throw err;
   }
-}
 
-export async function remove(id) {
-  const deleted = await Category.remove(id);
-  if (!deleted) throw new AppError("Categoría no encontrada", 404);
+  async create(fields) {
+    const category = new Category({ name: fields.name, description: fields.description });
+    try {
+      return await this.#categories.insert(category);
+    } catch (err) {
+      if (err.code === "ER_DUP_ENTRY") throw duplicate();
+      throw err;
+    }
+  }
+
+  async update(id, fields) {
+    const category = await this.get(id);
+    category.edit(fields);
+    try {
+      return await this.#categories.update(category);
+    } catch (err) {
+      if (err.code === "ER_DUP_ENTRY") throw duplicate();
+      throw err;
+    }
+  }
+
+  async remove(id) {
+    if (!(await this.#categories.delete(id))) throw new AppError("Categoría no encontrada", 404);
+  }
 }

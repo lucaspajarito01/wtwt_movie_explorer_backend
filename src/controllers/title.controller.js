@@ -1,5 +1,5 @@
 import { matchedData } from "express-validator";
-import * as titleService from "../services/title.service.js";
+import { titleService } from "../container.js";
 import { TITLE_FIELDS } from "../validators/title.validators.js";
 
 // Solo pasan los campos permitidos (evita que el cliente fije status o createdBy)

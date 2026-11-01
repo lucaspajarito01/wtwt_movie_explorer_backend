@@ -12,6 +12,10 @@ import openapi from "./docs/openapi.js";
 
 const app = express();
 
+// Detrás del proxy de la plataforma (Render) la IP real llega en X-Forwarded-For.
+// Sin esto, el rate limit vería la IP del proxy y bloquearía a todos los usuarios juntos.
+app.set('trust proxy', 1);
+
 app.use(
   cors({
     origin: config.corsOrigin,

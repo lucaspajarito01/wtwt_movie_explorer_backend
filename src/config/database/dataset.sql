@@ -59,34 +59,88 @@ INSERT INTO idiomas (nombre) VALUES
     ('Mandarín'),
     ('Ruso');
 
-INSERT INTO peliculas (titulo, descripcion, id_categoria, anio, duracion, id_director, id_plataforma, id_idioma, edad_recomendada, poster_url, banner_url, trailer_url, estado, id_usuario_creador) VALUES
-    ('El Origen del Futuro', 'Un hacker descubre una conspiración cibernética que amenaza con apagar la red global.', 4, 2023, '148 min', 1, 1, 2, '+13', 'https://example.com/posters/origen.jpg', 'https://example.com/banners/origen.jpg', 'https://youtube.com/watch?v=ejemplo1', 'aprobado', NULL),
-    ('Bajo la Sombra de la Noche', 'Un detective retirado debe resolver un caso personal antes de que amanezca.', 9, 2022, '115 min', 7, 4, 2, '+16', 'https://example.com/posters/sombra.jpg', 'https://example.com/banners/sombra.jpg', 'https://youtube.com/watch?v=ejemplo2', 'aprobado', NULL),
-    ('Risas en Altamar', 'Un crucero de vacaciones se convierte en un caos cómico cuando la tripulación confunde a los pasajeros.', 2, 2024, '95 min', 6, 3, 1, 'Todo Público', 'https://example.com/posters/risas.jpg', 'https://example.com/banners/risas.jpg', 'https://youtube.com/watch?v=ejemplo3', 'aprobado', NULL),
-    ('El Susurro del Viento', 'Un drama emotivo sobre la reconciliación de una familia en la campiña francesa.', 3, 2021, '120 min', 12, 5, 3, '+12', 'https://example.com/posters/susurro.jpg', 'https://example.com/banners/susurro.jpg', 'https://youtube.com/watch?v=ejemplo4', 'pendiente', NULL),
-    ('Laberinto de Sombras', 'Una criatura mítica acecha a un grupo de exploradores en lo profundo de un bosque ancestral.', 5, 2023, '102 min', 10, 6, 2, '+18', 'https://example.com/posters/laberinto.jpg', 'https://example.com/banners/laberinto.jpg', 'https://youtube.com/watch?v=ejemplo5', 'aprobado', NULL),
-    ('Fiebre de Velocidad', 'Pilotos clandestinos compiten en una carrera de resistencia a través de varios países.', 1, 2022, '130 min', 2, 2, 2, '+16', 'https://example.com/posters/velocidad.jpg', 'https://example.com/banners/velocidad.jpg', 'https://youtube.com/watch?v=ejemplo6', 'aprobado', NULL),
-    ('El Jardín de las Estrellas', 'Un viaje fantástico a través de galaxias lejanas en busca de la fuente de la vida.', 10, 2024, '110 min', 9, 3, 5, 'Todo Público', 'https://example.com/posters/jardin.jpg', 'https://example.com/banners/jardin.jpg', 'https://youtube.com/watch?v=ejemplo7', 'aprobado', NULL),
-    ('Memorias de Acero', 'Crónica histórica sobre la revolución industrial y el impacto social en las familias obreras.', 15, 2020, '140 min', 4, 9, 2, '+12', 'https://example.com/posters/acero.jpg', 'https://example.com/banners/acero.jpg', 'https://youtube.com/watch?v=ejemplo8', 'pendiente', NULL),
-    ('Operación Alfa', 'Agentes encubiertos deben desmantelar una red internacional de contrabando.', 12, 2023, '118 min', 11, 1, 2, '+16', 'https://example.com/posters/alfa.jpg', 'https://example.com/banners/alfa.jpg', 'https://youtube.com/watch?v=ejemplo9', 'aprobado', NULL),
-    ('Melodía de Invierno', 'Una joven pianista encuentra el amor mientras ensaya para el concierto de fin de año.', 13, 2022, '105 min', 6, 5, 4, 'Todo Público', 'https://example.com/posters/melodia.jpg', 'https://example.com/banners/melodia.jpg', 'https://youtube.com/watch?v=ejemplo10', 'aprobado', NULL),
-    ('El Último Duelo', 'Dos vaqueros se enfrentan por el control de un pueblo fronterizo sin ley.', 14, 2021, '112 min', 2, 6, 2, '+16', 'https://example.com/posters/duelo.jpg', 'https://example.com/banners/duelo.jpg', 'https://youtube.com/watch?v=ejemplo11', 'aprobado', NULL),
-    ('Planetas Lejanos', 'La humanidad coloniza un nuevo exoplaneta, enfrentándose a desafíos ecológicos extremos.', 4, 2024, '155 min', 5, 4, 2, '+13', 'https://example.com/posters/planetas.jpg', 'https://example.com/banners/planetas.jpg', 'https://youtube.com/watch?v=ejemplo12', 'pendiente', NULL),
-    ('Guardianes del Océano', 'Documental que explora la biodiversidad marina y los esfuerzos de conservación en arrecifes.', 11, 2023, '90 min', 3, 3, 1, 'Todo Público', 'https://example.com/posters/oceanos.jpg', 'https://example.com/banners/oceanos.jpg', 'https://youtube.com/watch?v=ejemplo13', 'aprobado', NULL),
-    ('Aventura en la Selva', 'Un grupo de arqueólogos busca una ciudad perdida oculta en la selva amazónica.', 6, 2022, '125 min', 3, 8, 1, '+12', 'https://example.com/posters/selva.jpg', 'https://example.com/banners/selva.jpg', 'https://youtube.com/watch?v=ejemplo14', 'aprobado', NULL),
-    ('Magia en la Ciudad', 'Un hechizo accidental transforma la vida cotidiana de un modesto empleado de oficina.', 10, 2023, '98 min', 10, 1, 2, 'Todo Público', 'https://example.com/posters/magia.jpg', 'https://example.com/banners/magia.jpg', 'https://youtube.com/watch?v=ejemplo15', 'aprobado', NULL),
-    ('Corazones Rotos', 'Dos exparejas se reencuentran en una boda y deben lidiar con sentimientos no resueltos.', 8, 2021, '104 min', 12, 2, 3, '+13', 'https://example.com/posters/corazones.jpg', 'https://example.com/banners/corazones.jpg', 'https://youtube.com/watch?v=ejemplo16', 'aprobado', NULL),
-    ('El Imperio del Crimen', 'Ascenso y caída de un capo de la mafia en el Chicago de los años treinta.', 12, 2020, '150 min', 4, 4, 2, '+18', 'https://example.com/posters/imperio.jpg', 'https://example.com/banners/imperio.jpg', 'https://youtube.com/watch?v=ejemplo17', 'pendiente', NULL),
-    ('El Bosque Encantado', 'Una niña descubre un portal secreto hacia un reino gobernado por espíritus del bosque.', 7, 2024, '92 min', 9, 3, 5, 'Todo Público', 'https://example.com/posters/bosque.jpg', 'https://example.com/banners/bosque.jpg', 'https://youtube.com/watch?v=ejemplo18', 'aprobado', NULL),
-    ('Conexión Secreta', 'Un analista de inteligencia destapa una filtración masiva dentro de su propia agencia.', 9, 2023, '116 min', 7, 10, 2, '+16', 'https://example.com/posters/conexion.jpg', 'https://example.com/banners/conexion.jpg', 'https://youtube.com/watch?v=ejemplo19', 'aprobado', NULL),
-    ('Risas Compartidas', 'Tres amigos intentan abrir un negocio de comedia en vivo con resultados desastrosos.', 2, 2022, '99 min', 14, 2, 2, '+13', 'https://example.com/posters/comedia3.jpg', 'https://example.com/banners/comedia3.jpg', 'https://youtube.com/watch?v=ejemplo20', 'aprobado', NULL),
-    ('Abismo Profundo', 'Un equipo de submarinistas investiga una anomalía geológica en la fosa de las Marianas.', 5, 2023, '108 min', 15, 6, 2, '+16', 'https://example.com/posters/abismo.jpg', 'https://example.com/banners/abismo.jpg', 'https://youtube.com/watch?v=ejemplo21', 'pendiente', NULL),
-    ('El Legado de los Reyes', 'Drama histórico sobre las intrigas políticas en la corte real del siglo XV.', 15, 2021, '145 min', 11, 4, 2, '+16', 'https://example.com/posters/reyes.jpg', 'https://example.com/banners/reyes.jpg', 'https://youtube.com/watch?v=ejemplo22', 'aprobado', NULL),
-    ('Ritmo Urbano', 'Bailarines callejeros compiten por el campeonato nacional de hip-hop.', 13, 2024, '107 min', 6, 1, 1, '+12', 'https://example.com/posters/ritmo.jpg', 'https://example.com/banners/ritmo.jpg', 'https://youtube.com/watch?v=ejemplo23', 'aprobado', NULL),
-    ('Frontera sin Ley', 'Un sheriff solitario protege un pueblo fronterizo de una banda de forajidos.', 14, 2022, '114 min', 2, 5, 2, '+16', 'https://example.com/posters/frontera.jpg', 'https://example.com/banners/frontera.jpg', 'https://youtube.com/watch?v=ejemplo24', 'aprobado', NULL),
-    ('El Eco del Pasado', 'Una arquitecta descubre secretos familiares al restaurar una antigua mansión.', 3, 2023, '122 min', 13, 9, 1, '+13', 'https://example.com/posters/eco.jpg', 'https://example.com/banners/eco.jpg', 'https://youtube.com/watch?v=ejemplo25', 'aprobado', NULL),
-    ('Misión Cósmica', 'Astronautas deben reparar una estación espacial dañada antes de una tormenta solar.', 4, 2024, '132 min', 1, 3, 2, '+13', 'https://example.com/posters/mision.jpg', 'https://example.com/banners/mision.jpg', 'https://youtube.com/watch?v=ejemplo26', 'pendiente', NULL),
-    ('La Casa del Reloj', 'Un thriller psicológico sobre un misterioso anticuario y su colección maldita.', 9, 2021, '100 min', 7, 2, 2, '+16', 'https://example.com/posters/reloj.jpg', 'https://example.com/banners/reloj.jpg', 'https://youtube.com/watch?v=ejemplo27', 'aprobado', NULL),
-    ('Amor a Primer Vistazo', 'Una comedia romántica ambientada en las bulliciosas calles de Tokio.', 8, 2023, '103 min', 14, 1, 5, 'Todo Público', 'https://example.com/posters/tokyo.jpg', 'https://example.com/banners/tokyo.jpg', 'https://youtube.com/watch?v=ejemplo28', 'aprobado', NULL),
-    ('Cazadores de Leyendas', 'Aventureros recorren el mundo tras las reliquias más buscadas de la antigüedad.', 6, 2022, '135 min', 3, 8, 2, '+12', 'https://example.com/posters/leyendas.jpg', 'https://example.com/banners/leyendas.jpg', 'https://youtube.com/watch?v=ejemplo29', 'aprobado', NULL),
-    ('Voces de la Tierra', 'Documental íntimo sobre las comunidades indígenas y su relación con la naturaleza.', 11, 2023, '95 min', 8, 3, 6, 'Todo Público', 'https://example.com/posters/voces.jpg', 'https://example.com/banners/voces.jpg', 'https://youtube.com/watch?v=ejemplo30', 'aprobado', NULL);
+INSERT INTO peliculas (
+    titulo, descripcion, id_categoria, anio, duracion,
+    id_director, id_plataforma, id_idioma, edad_recomendada,
+    poster_url, banner_url, trailer_url, estado, id_usuario_creador
+) VALUES
+    (
+        'Inception',
+        'Un especialista en extraer secretos del subconsciente recibe la mision de implantar una idea en la mente de un empresario.',
+        4, 2010, '148 min', 1, 8, 2, '+13',
+        'https://image.tmdb.org/t/p/w500/oYuLEt3zVCKq57qu2F8dT7NIa6f.jpg',
+        'https://image.tmdb.org/t/p/w1280/8ZTVqvKDQ8emSGUEMjsS4yHAwrp.jpg',
+        'https://www.themoviedb.org/movie/27205-inception/videos', 'aprobado', NULL
+    ),
+    (
+        'Interstellar',
+        'Un grupo de exploradores viaja a traves de un agujero de gusano en busca de un futuro para la humanidad.',
+        4, 2014, '169 min', 1, 8, 2, '+13',
+        'https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg',
+        'https://image.tmdb.org/t/p/w1280/pbrkL804c8yAv3zBZR4QPEafpAR.jpg',
+        'https://www.themoviedb.org/movie/157336-interstellar/videos', 'aprobado', NULL
+    ),
+    (
+        'Reservoir Dogs',
+        'El fracaso de un robo organizado provoca desconfianza y enfrentamientos entre los criminales sobrevivientes.',
+        12, 1992, '99 min', 2, 8, 2, '+18',
+        'https://image.tmdb.org/t/p/w500/xi8Iu6qyTfyZVDVy60raIOYJJmk.jpg',
+        'https://image.tmdb.org/t/p/w1280/jqFjgNnxpXIXWuPsyfqmcLXRo9p.jpg',
+        'https://www.themoviedb.org/movie/500-reservoir-dogs/videos', 'aprobado', NULL
+    ),
+    (
+        'Django Unchained',
+        'Con la ayuda de un cazarrecompensas, un hombre liberado busca rescatar a su esposa de un poderoso terrateniente.',
+        14, 2012, '165 min', 2, 8, 2, '+18',
+        'https://image.tmdb.org/t/p/w500/7oWY8VDWW7thTzWh3OKYRkWUlD5.jpg',
+        'https://image.tmdb.org/t/p/w1280/n2eUT4zQA2yYcKOgAFidgOyiFoH.jpg',
+        'https://www.themoviedb.org/movie/68718-django-unchained/videos', 'aprobado', NULL
+    ),
+    (
+        'Jaws',
+        'Un enorme tiburon blanco amenaza a una comunidad costera y obliga a sus habitantes a organizar su captura.',
+        5, 1975, '124 min', 3, 8, 2, '+13',
+        'https://image.tmdb.org/t/p/w500/l1yltvzILaZcx2jYvc5sEMkM7Eh.jpg',
+        'https://image.tmdb.org/t/p/w1280/slkPgAt1IQgxZXNrazEcOzhAK8f.jpg',
+        'https://www.themoviedb.org/movie/578-jaws/videos', 'aprobado', NULL
+    ),
+    (
+        'Schindler''s List',
+        'Un empresario aleman utiliza su fabrica para salvar la vida de cientos de personas durante el Holocausto.',
+        15, 1993, '195 min', 3, 8, 2, '+16',
+        'https://image.tmdb.org/t/p/w500/sF1U4EUQS8YHUYjNl3pMGNIQyr0.jpg',
+        'https://image.tmdb.org/t/p/w1280/zb6fM1CX41D9rF9hdgclu0peUmy.jpg',
+        'https://www.themoviedb.org/movie/424-schindlers-list/videos', 'aprobado', NULL
+    ),
+    (
+        'Goodfellas',
+        'La historia del ascenso y la caida de un hombre que se integra al mundo del crimen organizado.',
+        12, 1990, '145 min', 4, 8, 2, '+18',
+        'https://image.tmdb.org/t/p/w500/aKuFiU82s5ISJpGZp7YkIr3kCUd.jpg',
+        'https://image.tmdb.org/t/p/w1280/sw7mordbZxgITU877yTpZCud90M.jpg',
+        'https://www.themoviedb.org/movie/769-goodfellas/videos', 'aprobado', NULL
+    ),
+    (
+        'Taxi Driver',
+        'Un veterano trabaja como taxista nocturno en Nueva York mientras su aislamiento y frustracion aumentan.',
+        3, 1976, '114 min', 4, 8, 2, '+18',
+        'https://image.tmdb.org/t/p/w500/ekstpH614fwDX8DUln1a2Opz0N8.jpg',
+        'https://image.tmdb.org/t/p/w1280/6aoyUbvu0419XLKLIMoH0TkEicH.jpg',
+        'https://www.themoviedb.org/movie/103-taxi-driver/videos', 'aprobado', NULL
+    ),
+    (
+        'Dune',
+        'Paul Atreides viaja al peligroso planeta Arrakis, donde se disputa el control de un recurso de gran valor.',
+        4, 2021, '155 min', 5, 8, 2, '+13',
+        'https://image.tmdb.org/t/p/w500/d5NXSklXo0qyIYkgV94XAgMIckC.jpg',
+        'https://image.tmdb.org/t/p/w1280/jYEW5xZkZk2WTrdbMGAPFuBqbDc.jpg',
+        'https://www.themoviedb.org/movie/438631-dune/videos', 'aprobado', NULL
+    ),
+    (
+        'Arrival',
+        'Una especialista en linguistica intenta comunicarse con visitantes extraterrestres que llegan a la Tierra.',
+        4, 2016, '116 min', 5, 8, 2, '+13',
+        'https://image.tmdb.org/t/p/w500/7Yd1qVsFRypQPCiVbzZNDExJFo7.jpg',
+        'https://image.tmdb.org/t/p/w1280/8MUZz7oPXQftFTslZpRP3CVMOoq.jpg',
+        'https://www.themoviedb.org/movie/329865-arrival/videos', 'aprobado', NULL
+    )

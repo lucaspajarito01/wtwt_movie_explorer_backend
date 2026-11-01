@@ -24,6 +24,10 @@ const notOwner = err(
   "La reseña es de otro usuario",
   "No tienes permisos para modificar esta reseña",
 );
+const notOwnerDelete = err(
+  "La reseña es de otro usuario y quien llama no es admin",
+  "No tienes permisos para eliminar esta reseña",
+);
 const ratingError = badRequest([
   { field: "rating", message: "La calificación debe ser un entero entre 1 y 10" },
 ]);
@@ -104,14 +108,14 @@ export const reviewPaths = {
     delete: {
       tags: ["Reseñas"],
       operationId: "deleteReview",
-      summary: "Eliminar mi reseña",
-      description: "Solo el autor. También se eliminan los votos recibidos.",
+      summary: "Eliminar una reseña",
+      description: "El autor o un administrador (moderación). También se eliminan los votos recibidos.",
       security: bearer,
       parameters: [idParam("Id de la reseña")],
       responses: {
         200: ok("Reseña eliminada", envelope(null), { success: true, message: "Reseña eliminada correctamente" }),
         401: unauthorized,
-        403: notOwner,
+        403: notOwnerDelete,
         404: reviewNotFound,
       },
     },

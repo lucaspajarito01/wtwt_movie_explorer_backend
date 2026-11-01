@@ -1,6 +1,6 @@
 import { body, query } from "express-validator";
 import { paginationRules } from "./common.validators.js";
-import { TITLE_SORTS } from "../models/title.model.js";
+import { TITLE_SORTS } from "../repositories/TitleRepository.js";
 
 // Campos que el cliente puede enviar
 export const TITLE_FIELDS = [

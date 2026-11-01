@@ -1,6 +1,5 @@
-import { withTransaction } from "../config/db.js";
-import * as Vote from "../models/vote.model.js";
 import AppError from "../utils/AppError.js";
+import Vote from "../entities/Vote.js";
 
 async function retryOnDeadlock(fn, attempts = 3) {
   for (let attempt = 1; ; attempt++) {
@@ -12,31 +11,42 @@ async function retryOnDeadlock(fn, attempts = 3) {
   }
 }
 
-async function lockAndCheck(conn, reviewId, userId) {
-  const review = await Vote.lockReview(conn, reviewId);
-  if (!review) throw new AppError("Reseña no encontrada", 404);
-  if (Number(review.userId) === Number(userId)) {
-    throw new AppError("No puedes votar tu propia reseña", 403);
+export default class VoteService {
+  #reviews;
+  #votes;
+  #runInTransaction;
+
+  constructor(reviewRepository, voteRepository, runInTransaction) {
+    this.#reviews = reviewRepository;
+    this.#votes = voteRepository;
+    this.#runInTransaction = runInTransaction;
   }
-}
 
-// Crea el voto o cambia like <-> dislike. Idempotente: repetir el mismo voto no duplica nada.
-export function vote(reviewId, userId, type) {
-  return retryOnDeadlock(() =>
-    withTransaction(async (conn) => {
-      await lockAndCheck(conn, reviewId, userId);
-      await Vote.upsert(conn, reviewId, userId, type);
-      return Vote.getSummary(conn, reviewId, userId);
-    }),
-  );
-}
+  async #lockAndCheck(conn, reviewId, user) {
+    const review = await this.#reviews.findByIdForShare(reviewId, conn);
+    if (!review) throw new AppError("Reseña no encontrada", 404);
+    review.assertVotableBy(user); // la regla "no votar la propia reseña" vive en la entidad
+  }
 
-export function unvote(reviewId, userId) {
-  return retryOnDeadlock(() =>
-    withTransaction(async (conn) => {
-      await lockAndCheck(conn, reviewId, userId);
-      await Vote.remove(conn, reviewId, userId);
-      return Vote.getSummary(conn, reviewId, userId);
-    }),
-  );
+  // Crea el voto o cambia like <-> dislike. Idempotente: repetir el mismo voto no duplica nada.
+  vote(reviewId, user, type) {
+    const vote = Vote.cast({ reviewId, user, type });
+    return retryOnDeadlock(() =>
+      this.#runInTransaction(async (conn) => {
+        await this.#lockAndCheck(conn, reviewId, user);
+        await this.#votes.upsert(vote, conn);
+        return this.#votes.summarize(reviewId, user.id, conn);
+      }),
+    );
+  }
+
+  unvote(reviewId, user) {
+    return retryOnDeadlock(() =>
+      this.#runInTransaction(async (conn) => {
+        await this.#lockAndCheck(conn, reviewId, user);
+        await this.#votes.remove(reviewId, user.id, conn);
+        return this.#votes.summarize(reviewId, user.id, conn);
+      }),
+    );
+  }
 }

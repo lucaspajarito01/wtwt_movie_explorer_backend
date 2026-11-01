@@ -19,7 +19,7 @@ function mapDbError(err) {
 async function resolveRefs(conn, data) {
   const refs = {};
   if (Object.hasOwn(data, "director")) {
-    refs.directorId = await Title.findOrCreateRef(conn, "director_peliculas", "id_director", data.director);
+    refs.directorId = await Title.findOrCr,findOrCreateRef(conn, "director_peliculas", "id_director", data.director);
   }
   if (Object.hasOwn(data, "platform")) {
     refs.platformId = await Title.findOrCreateRef(conn, "plataformas", "id_plataforma", data.platform);

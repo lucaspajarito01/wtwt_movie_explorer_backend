@@ -5,6 +5,7 @@ import { createTitleRules, listTitleRules, updateTitleRules, } from "../../valid
 import { approve, create, get, list, remove, update } from "../../controllers/title.controller.js";
 import { authenticate, authorize, optionalAuthenticate } from "../../middlewares/auth.js";
 import { ROLES } from "../../utils/roles.js";
+import { exportReviews } from "../../controllers/reviewExport.controller.js";
 
 const router = Router();
 
@@ -15,6 +16,7 @@ router.get("/:id", optionalAuthenticate, idParam(), validate, get);
 // Requieren sesión
 router.post("/", authenticate, createTitleRules, validate, create);
 router.patch("/:id", authenticate, idParam(), updateTitleRules, validate, update);
+router.post("/:id/reviews/export", authenticate, idParam(), validate, exportReviews);
 
 // Solo administrador
 router.patch("/:id/approve", authenticate, authorize(ROLES.ADMIN), idParam(), validate, approve);

@@ -105,7 +105,23 @@ const toEntity = (row) =>
   });
 
 export default class TitleRepository extends BaseRepository {
-  async findAll({ status, categoryId, sort = "recent", limit, offset }, conn) {
+  async findAll(
+    {
+      status,
+      q,
+      categoryId,
+      category,
+      minRating,
+      maxRating,
+      year,
+      minYear,
+      maxYear,
+      sort = "recent",
+      limit,
+      offset,
+    },
+    conn,
+  ) {
     const db = this.executor(conn);
     const conditions = [];
     const params = [];
@@ -113,9 +129,42 @@ export default class TitleRepository extends BaseRepository {
       conditions.push("p.estado = ?");
       params.push(status);
     }
+    if (q) {
+      conditions.push("(p.titulo LIKE ? OR p.descripcion LIKE ?)");
+      params.push(`%${q}%`, `%${q}%`);
+    }
     if (categoryId) {
       conditions.push("p.id_categoria = ?");
       params.push(categoryId);
+    }
+    if (category) {
+      if (/^\d+$/.test(String(category))) {
+        conditions.push("p.id_categoria = ?");
+        params.push(Number(category));
+      } else {
+        conditions.push("LOWER(c.nombre) LIKE LOWER(?)");
+        params.push(`%${category}%`);
+      }
+    }
+    if (minRating !== undefined && minRating !== null) {
+      conditions.push("stats.avg_rating >= ?");
+      params.push(minRating);
+    }
+    if (maxRating !== undefined && maxRating !== null) {
+      conditions.push("stats.avg_rating <= ?");
+      params.push(maxRating);
+    }
+    if (year !== undefined && year !== null) {
+      conditions.push("p.anio = ?");
+      params.push(year);
+    }
+    if (minYear !== undefined && minYear !== null) {
+      conditions.push("p.anio >= ?");
+      params.push(minYear);
+    }
+    if (maxYear !== undefined && maxYear !== null) {
+      conditions.push("p.anio <= ?");
+      params.push(maxYear);
     }
     const where = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
     const orderBy = ORDERS[sort] ?? ORDERS.recent;
@@ -126,7 +175,11 @@ export default class TitleRepository extends BaseRepository {
       [...params, limit, offset],
     );
     const [[{ total }]] = await db.query(
-      `SELECT COUNT(*) AS total FROM peliculas p ${where}`,
+      `SELECT COUNT(*) AS total
+         FROM peliculas p
+         LEFT JOIN categorias c ON c.id_categoria = p.id_categoria
+         ${STATS_JOIN}
+         ${where}`,
       params,
     );
     return { items: rows.map(toEntity), total };

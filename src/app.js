@@ -1,3 +1,4 @@
+import path from "node:path";
 import express from 'express';
 import cors from 'cors';
 import config from './config/env.js';
@@ -38,6 +39,7 @@ app.use(
   }),
 );
 app.get("/api/docs.json", (req, res) => res.json(openapi)); // importable en Postman/Insomnia
+app.get("/search", (req, res) => res.sendFile(path.resolve(process.cwd(), "public/search.html")));
 
 app.use(config.apiPrefix, apiLimiter);   // límite global solo sobre /api/v1
 app.use(express.json());

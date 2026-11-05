@@ -113,16 +113,71 @@ export const updateTitleRules = [
 export const listTitleRules = [
   ...paginationRules,
   query("estado")
-    .optional()
+    .optional({ values: "falsy" })
     .isIn(["aprobado", "pendiente", "todos"])
     .withMessage("estado debe ser aprobado, pendiente o todos"),
+  query("q")
+    .optional({ values: "falsy" })
+    .isString()
+    .withMessage("q debe ser texto")
+    .trim()
+    .isLength({ max: 150 })
+    .withMessage("q no puede superar los 150 caracteres"),
   query("categoryId")
-    .optional()
+    .optional({ values: "falsy" })
     .isInt({ min: 1 })
     .withMessage("categoryId debe ser un entero positivo")
     .toInt(),
+  query("category")
+    .optional({ values: "falsy" })
+    .isString()
+    .withMessage("category debe ser texto")
+    .trim()
+    .isLength({ max: 50 })
+    .withMessage("category no puede superar los 50 caracteres"),
+  query("minRating")
+    .optional({ values: "falsy" })
+    .isFloat({ min: 0, max: 10 })
+    .withMessage("minRating debe ser un número entre 0 y 10")
+    .toFloat(),
+  query("maxRating")
+    .optional({ values: "falsy" })
+    .isFloat({ min: 0, max: 10 })
+    .withMessage("maxRating debe ser un número entre 0 y 10")
+    .toFloat()
+    .custom((maxRating, { req }) => {
+      const min = Number(req.query.minRating);
+      if (req.query.minRating !== undefined && req.query.minRating !== "" && !Number.isNaN(min) && maxRating < min) {
+        throw new Error("maxRating debe ser mayor o igual que minRating");
+      }
+      return true;
+    }),
+  query("year")
+    .optional({ values: "falsy" })
+    .isInt({ min: 1888, max: MAX_YEAR })
+    .withMessage(`year debe estar entre 1888 y ${MAX_YEAR}`)
+    .toInt(),
+  query("minYear")
+    .optional({ values: "falsy" })
+    .isInt({ min: 1888, max: MAX_YEAR })
+    .withMessage(`minYear debe estar entre 1888 y ${MAX_YEAR}`)
+    .toInt(),
+  query("maxYear")
+    .optional({ values: "falsy" })
+    .isInt({ min: 1888, max: MAX_YEAR })
+    .withMessage(`maxYear debe estar entre 1888 y ${MAX_YEAR}`)
+    .toInt()
+    .custom((maxYear, { req }) => {
+      const min = Number(req.query.minYear);
+      if (req.query.minYear !== undefined && req.query.minYear !== "" && !Number.isNaN(min) && maxYear < min) {
+        throw new Error("maxYear debe ser mayor o igual que minYear");
+      }
+      return true;
+    }),
   query("sort")
-    .optional()
+    .optional({ values: "falsy" })
     .isIn(TITLE_SORTS)
     .withMessage(`sort debe ser uno de: ${TITLE_SORTS.join(", ")}`),
 ];
+
+export const searchTitleRules = listTitleRules;

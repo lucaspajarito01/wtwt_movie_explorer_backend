@@ -1,8 +1,8 @@
 import { Router } from "express";
 import validate from "../../middlewares/validate.js";
 import { idParam } from "../../validators/common.validators.js";
-import { createTitleRules, listTitleRules, updateTitleRules, } from "../../validators/title.validators.js";
-import { approve, create, get, list, remove, update } from "../../controllers/title.controller.js";
+import { createTitleRules, listTitleRules, searchTitleRules, updateTitleRules, } from "../../validators/title.validators.js";
+import { approve, create, get, list, remove, search, update } from "../../controllers/title.controller.js";
 import { authenticate, authorize, optionalAuthenticate } from "../../middlewares/auth.js";
 import { ROLES } from "../../utils/roles.js";
 import { exportReviews } from "../../controllers/reviewExport.controller.js";
@@ -11,6 +11,7 @@ const router = Router();
 
 // Públicas (con token opcional para ver pendientes propios / filtro de admin)
 router.get("/", optionalAuthenticate, listTitleRules, validate, list);
+router.get("/search", optionalAuthenticate, searchTitleRules, validate, search);
 router.get("/:id", optionalAuthenticate, idParam(), validate, get);
 
 // Requieren sesión

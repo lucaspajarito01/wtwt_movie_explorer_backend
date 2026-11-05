@@ -1,4 +1,4 @@
-import History from '../models/History';
+import History from "../entities/historial.js";
 
 const logHistory = async (userId, actionType, actionDetails = {}) => {
   try {
@@ -8,8 +8,8 @@ const logHistory = async (userId, actionType, actionDetails = {}) => {
       actionDetails,
     });
   } catch (error) {
-    console.error('Error al registrar el historial:', error);
+    console.error("Error al registrar el historial:", error);
   }
 };
 
-module.exports = logHistory;
+export default logHistory;

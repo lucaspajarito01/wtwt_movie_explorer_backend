@@ -1,23 +1,20 @@
-import { DataTypes } from 'sequelize';
-const sequelize = require('../config/database'); // Asegúrate de que este archivo apunta a tu configuración de Sequelize
+import pool from "../config/db.js";
 
-const History = sequelize.define('History', {
-  userId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
+const History = {
+  async create({ userId, actionType, actionDetails = {} }) {
+    const [result] = await pool.execute(
+      `INSERT INTO historial_actividad (id_usuario, tipo_accion, detalles)
+       VALUES (?, ?, ?)`,
+      [userId, actionType, JSON.stringify(actionDetails ?? {})],
+    );
+    return {
+      id: result.insertId,
+      userId,
+      actionType,
+      actionDetails,
+      createdAt: new Date(),
+    };
   },
-  actionType: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  actionDetails: {
-    type: DataTypes.JSON, // Para almacenar detalles adicionales de la acción
-    allowNull: true,
-  },
-  createdAt: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
-  },
-});
+};
 
-module.exports = History;
+export default History;

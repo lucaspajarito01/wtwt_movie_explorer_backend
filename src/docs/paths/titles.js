@@ -74,7 +74,14 @@ export const titlePaths = {
       parameters: [
         { name: "page", in: "query", description: "Página (desde 1)", schema: { type: "integer", minimum: 1, default: 1 } },
         { name: "limit", in: "query", description: "Resultados por página", schema: { type: "integer", minimum: 1, maximum: 50, default: 10 } },
-        { name: "categoryId", in: "query", description: "Filtra por categoría", schema: { type: "integer", minimum: 1 }, example: 1 },
+        { name: "q", in: "query", description: "Texto a buscar en título o descripción", schema: { type: "string", maxLength: 150 }, example: "Evangelion" },
+        { name: "categoryId", in: "query", description: "Filtra por id de categoría", schema: { type: "integer", minimum: 1 }, example: 1 },
+        { name: "category", in: "query", description: "Filtra por nombre de categoría (ej: Acción, Comedia, Drama, Anime)", schema: { type: "string", maxLength: 50 }, example: "Anime" },
+        { name: "minRating", in: "query", description: "Calificación promedio mínima (0 a 10)", schema: { type: "number", minimum: 0, maximum: 10 }, example: 3 },
+        { name: "maxRating", in: "query", description: "Calificación promedio máxima (0 a 10)", schema: { type: "number", minimum: 0, maximum: 10 }, example: 10 },
+        { name: "year", in: "query", description: "Año exacto de estreno", schema: { type: "integer", minimum: 1888 }, example: 1995 },
+        { name: "minYear", in: "query", description: "Año mínimo de estreno (ej: desde 2015)", schema: { type: "integer", minimum: 1888 }, example: 2015 },
+        { name: "maxYear", in: "query", description: "Año máximo de estreno", schema: { type: "integer", minimum: 1888 }, example: 2026 },
         {
           name: "sort",
           in: "query",
@@ -145,6 +152,40 @@ export const titlePaths = {
         ]),
         401: unauthorized,
         409: duplicate,
+      },
+    },
+  },
+  "/titles/search": {
+    get: {
+      tags: ["Títulos"],
+      operationId: "searchTitles",
+      summary: "Buscador avanzado de películas (categoría, rango de calificación y año)",
+      description:
+        "Permite filtrar películas combinando categoría (`category` o `categoryId`), " +
+        "rango de calificación (`minRating`, `maxRating`), año de estreno (`year`, `minYear`, `maxYear`) " +
+        "y búsqueda por texto (`q`). Devuelve el listado paginado con título, categoría, calificación y año de estreno.",
+      security: optionalBearer,
+      parameters: [
+        { name: "q", in: "query", description: "Texto a buscar en título o descripción", schema: { type: "string", maxLength: 150 }, example: "Evangelion" },
+        { name: "category", in: "query", description: "Nombre de categoría (ej: Acción, Comedia, Drama, Anime)", schema: { type: "string", maxLength: 50 }, example: "Anime" },
+        { name: "categoryId", in: "query", description: "Id de categoría", schema: { type: "integer", minimum: 1 }, example: 1 },
+        { name: "minRating", in: "query", description: "Calificación mínima (0 a 10)", schema: { type: "number", minimum: 0, maximum: 10 }, example: 3 },
+        { name: "maxRating", in: "query", description: "Calificación máxima (0 a 10)", schema: { type: "number", minimum: 0, maximum: 10 }, example: 10 },
+        { name: "year", in: "query", description: "Año exacto de estreno", schema: { type: "integer", minimum: 1888 }, example: 1995 },
+        { name: "minYear", in: "query", description: "Año de estreno mínimo (ej: después de 2015)", schema: { type: "integer", minimum: 1888 }, example: 2015 },
+        { name: "maxYear", in: "query", description: "Año de estreno máximo", schema: { type: "integer", minimum: 1888 }, example: 2026 },
+        { name: "sort", in: "query", description: "Orden de resultados", schema: { type: "string", enum: ["recent", "ranking", "rating", "reviews", "title", "year"], default: "recent" } },
+        { name: "page", in: "query", description: "Página (desde 1)", schema: { type: "integer", minimum: 1, default: 1 } },
+        { name: "limit", in: "query", description: "Resultados por página", schema: { type: "integer", minimum: 1, maximum: 50, default: 10 } },
+      ],
+      responses: {
+        200: ok("Resultados de búsqueda avanzada", envelope({ type: "array", items: ref("Title") }, { message: false, meta: true }), {
+          success: true,
+          data: [eva],
+          meta: { page: 1, limit: 10, total: 1, totalPages: 1 },
+        }),
+        400: badRequest([{ field: "minRating", message: "minRating debe ser un número entre 0 y 10" }]),
+        401: unauthorized,
       },
     },
   },

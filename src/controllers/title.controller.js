@@ -16,15 +16,37 @@ export async function list(req, res) {
     page = 1,
     limit = 10,
     estado = "aprobado",
+    q,
     categoryId,
+    category,
+    minRating,
+    maxRating,
+    year,
+    minYear,
+    maxYear,
     sort = "recent",
   } = matchedData(req, { locations: ["query"] });
   const { items, meta } = await titleService.list(
-    { page, limit, estado, categoryId, sort },
+    {
+      page,
+      limit,
+      estado,
+      q,
+      categoryId,
+      category,
+      minRating,
+      maxRating,
+      year,
+      minYear,
+      maxYear,
+      sort,
+    },
     req.user,
   );
   res.json({ success: true, data: items, meta });
 }
+
+export const search = list;
 
 export async function get(req, res) {
   const title = await titleService.get(req.params.id, req.user);

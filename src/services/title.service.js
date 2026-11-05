@@ -39,10 +39,37 @@ export default class TitleService {
   }
 
   // Público: solo aprobados. Admin: puede filtrar por estado.
-  async list({ page, limit, estado, categoryId, sort }, user) {
+  async list(
+    {
+      page,
+      limit,
+      estado,
+      q,
+      categoryId,
+      category,
+      minRating,
+      maxRating,
+      year,
+      minYear,
+      maxYear,
+      sort,
+    },
+    user,
+  ) {
     const status = user?.role === "admin" ? estado : "aprobado";
     const { items, total } = await this.#titles.findAll({
-      status, categoryId, sort, limit, offset: (page - 1) * limit,
+      status,
+      ...(q !== undefined && { q }),
+      ...(categoryId !== undefined && { categoryId }),
+      ...(category !== undefined && { category }),
+      ...(minRating !== undefined && { minRating }),
+      ...(maxRating !== undefined && { maxRating }),
+      ...(year !== undefined && { year }),
+      ...(minYear !== undefined && { minYear }),
+      ...(maxYear !== undefined && { maxYear }),
+      sort,
+      limit,
+      offset: (page - 1) * limit,
     });
     return { items, meta: { page, limit, total, totalPages: Math.ceil(total / limit) } };
   }

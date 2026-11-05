@@ -57,6 +57,32 @@ test("list: un usuario normal siempre ve solo aprobados aunque pida 'todos'", as
   assert.equal(log.findAllArgs.status, "todos");
 });
 
+test("list (buscador avanzado): reenvía filtros de categoría, rango de calificación y año", async () => {
+  const { service, log } = setup();
+  await service.list(
+    {
+      page: 1,
+      limit: 10,
+      estado: "aprobado",
+      q: "Dune",
+      category: "Ciencia Ficción",
+      minRating: 3,
+      maxRating: 5,
+      minYear: 2015,
+      maxYear: 2025,
+      sort: "rating",
+    },
+    ana,
+  );
+  assert.equal(log.findAllArgs.q, "Dune");
+  assert.equal(log.findAllArgs.category, "Ciencia Ficción");
+  assert.equal(log.findAllArgs.minRating, 3);
+  assert.equal(log.findAllArgs.maxRating, 5);
+  assert.equal(log.findAllArgs.minYear, 2015);
+  assert.equal(log.findAllArgs.maxYear, 2025);
+  assert.equal(log.findAllArgs.sort, "rating");
+});
+
 test("update: persiste solo los cambios y resuelve referencias por nombre", async () => {
   const { service, log } = setup();
   const t = await service.create(data, ana);

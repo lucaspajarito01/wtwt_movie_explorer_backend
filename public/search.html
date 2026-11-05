@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WTWT Movie Explorer — Buscador Avanzado</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --surface: #1e293b;
+      --border: #334155;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-hover: #0284c7;
+      --badge: #0f766e;
+      --star: #fbbf24;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 2rem 1rem;
+      line-height: 1.5;
+    }
+    .container { max-width: 1050px; margin: 0 auto; }
+    header { margin-bottom: 1.5rem; }
+    h1 { font-size: 1.75rem; margin-bottom: 0.25rem; }
+    .subtitle { color: var(--muted); font-size: 0.95rem; }
+    .search-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+    }
+    .field { display: flex; flex-direction: column; gap: 0.35rem; }
+    label { font-size: 0.85rem; color: var(--muted); font-weight: 600; }
+    input, select {
+      background: var(--bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.55rem 0.75rem;
+      font-size: 0.95rem;
+    }
+    input:focus, select:focus { outline: 2px solid var(--accent); border-color: transparent; }
+    .actions {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1rem;
+      justify-content: flex-end;
+    }
+    button {
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+      padding: 0.6rem 1.2rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: background 0.15s;
+    }
+    .btn-primary { background: var(--accent); color: #0f172a; }
+    .btn-primary:hover { background: var(--accent-hover); color: #fff; }
+    .btn-secondary { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+    .btn-secondary:hover { color: var(--text); border-color: var(--muted); }
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    .results-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .results-table th, .results-table td {
+      text-align: left;
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .results-table th {
+      background: rgba(15, 23, 42, 0.6);
+      color: var(--muted);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .results-table tr:last-child td { border-bottom: none; }
+    .badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent);
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    .rating { color: var(--star); font-weight: 700; }
+    .empty, .error {
+      text-align: center;
+      padding: 2rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--muted);
+    }
+    .error { color: #f87171; border-color: #7f1d1d; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Buscador Avanzado de Películas</h1>
+      <p class="subtitle">Filtra por categoría, rango de calificación y año de estreno</p>
+    </header>
+
+    <form id="searchForm" class="search-card">
+      <div class="grid">
+        <div class="field">
+          <label for="q">Título o palabra clave</label>
+          <input type="text" id="q" name="q" placeholder="Ej: Evangelion, Akira..." />
+        </div>
+
+        <div class="field">
+          <label for="category">Categoría</label>
+          <input type="text" id="category" name="category" list="categoryList" placeholder="Ej: Acción, Comedia, Drama..." />
+          <datalist id="categoryList"></datalist>
+        </div>
+
+        <div class="field">
+          <label for="minRating">Calificación mínima (0–10)</label>
+          <input type="number" id="minRating" name="minRating" min="0" max="10" step="0.1" placeholder="Ej: 3" />
+        </div>
+
+        <div class="field">
+          <label for="maxRating">Calificación máxima (0–10)</label>
+          <input type="number" id="maxRating" name="maxRating" min="0" max="10" step="0.1" placeholder="Ej: 5" />
+        </div>
+
+        <div class="field">
+          <label for="minYear">Año de estreno (desde)</label>
+          <input type="number" id="minYear" name="minYear" min="1888" max="2035" placeholder="Ej: 2015" />
+        </div>
+
+        <div class="field">
+          <label for="maxYear">Año de estreno (hasta)</label>
+          <input type="number" id="maxYear" name="maxYear" min="1888" max="2035" placeholder="Ej: 2026" />
+        </div>
+
+        <div class="field">
+          <label for="sort">Ordenar por</label>
+          <select id="sort" name="sort">
+            <option value="recent">Más recientes</option>
+            <option value="rating">Mejor calificación</option>
+            <option value="ranking">Ranking ponderado</option>
+            <option value="year">Año de estreno</option>
+            <option value="title">Título (A–Z)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button type="reset" id="resetBtn" class="btn-secondary">Limpiar filtros</button>
+        <button type="submit" class="btn-primary">Buscar películas</button>
+      </div>
+    </form>
+
+    <div class="status-bar">
+      <span id="resultCount">Cargando resultados...</span>
+      <code id="queryPreview"></code>
+    </div>
+
+    <div id="resultsContainer"></div>
+  </div>
+
+  <script>
+    const API_BASE = window.location.origin.startsWith("http")
+      ? `${window.location.origin}/api/v1`
+      : "http://localhost:3000/api/v1";
+
+    const form = document.getElementById("searchForm");
+    const resetBtn = document.getElementById("resetBtn");
+    const resultsContainer = document.getElementById("resultsContainer");
+    const resultCount = document.getElementById("resultCount");
+    const queryPreview = document.getElementById("queryPreview");
+    const categoryList = document.getElementById("categoryList");
+
+    async function loadCategories() {
+      try {
+        const res = await fetch(`${API_BASE}/categories`);
+        const json = await res.json();
+        if (json.success && Array.isArray(json.data)) {
+          categoryList.innerHTML = json.data
+            .map((c) => `<option value="${escapeHtml(c.name)}"></option>`)
+            .join("");
+        }
+      } catch {
+        // Silencioso si aún no hay categorías cargadas
+      }
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    async function searchMovies() {
+      const formData = new FormData(form);
+      const params = new URLSearchParams();
+
+      for (const [key, value] of formData.entries()) {
+        const trimmed = String(value).trim();
+        if (trimmed !== "") {
+          params.set(key, trimmed);
+        }
+      }
+
+      const url = `${API_BASE}/titles/search${params.toString() ? `?${params.toString()}` : ""}`;
+      queryPreview.textContent = `GET /api/v1/titles/search${params.toString() ? `?${params.toString()}` : ""}`;
+      resultCount.textContent = "Buscando...";
+
+      try {
+        const response = await fetch(url);
+        const payload = await response.json();
+
+        if (!response.ok || !payload.success) {
+          const detail = payload.errors?.map((e) => `${e.field}: ${e.message}`).join(" | ") || payload.message || "Error al consultar";
+          resultsContainer.innerHTML = `<div class="error">${escapeHtml(detail)}</div>`;
+          resultCount.textContent = "0 resultados";
+          return;
+        }
+
+        const movies = payload.data || [];
+        const total = payload.meta?.total ?? movies.length;
+        resultCount.textContent = `${total} película(s) encontrada(s)`;
+
+        if (movies.length === 0) {
+          resultsContainer.innerHTML = `<div class="empty">No se encontraron películas con los criterios seleccionados.</div>`;
+          return;
+        }
+
+        resultsContainer.innerHTML = `
+          <table class="results-table">
+            <thead>
+              <tr>
+                <th>Título</th>
+                <th>Categoría</th>
+                <th>Calificación</th>
+                <th>Año de estreno</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${movies
+                .map(
+                  (movie) => `
+                <tr>
+                  <td>
+                    <strong>${escapeHtml(movie.title)}</strong>
+                    ${movie.director ? `<div style="font-size:0.8rem;color:var(--muted)">Dir: ${escapeHtml(movie.director)}</div>` : ""}
+                  </td>
+                  <td><span class="badge">${escapeHtml(movie.category || "Sin categoría")}</span></td>
+                  <td>
+                    <span class="rating">★ ${movie.avgRating !== null && movie.avgRating !== undefined ? movie.avgRating : "S/C"}</span>
+                    <span style="font-size:0.8rem;color:var(--muted)">(${movie.reviewCount ?? 0} reseñas)</span>
+                  </td>
+                  <td>${escapeHtml(movie.year ?? "—")}</td>
+                </tr>
+              `,
+                )
+                .join("")}
+            </tbody>
+          </table>
+        `;
+      } catch (err) {
+        resultsContainer.innerHTML = `<div class="error">No se pudo conectar con el servidor (${escapeHtml(err.message)}).</div>`;
+        resultCount.textContent = "Error de conexión";
+      }
+    }
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      searchMovies();
+    });
+
+    resetBtn.addEventListener("click", () => {
+      setTimeout(searchMovies, 0);
+    });
+
+    loadCategories();
+    searchMovies();
+  </script>
+</body>
+</html>
